@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="d50fccc2-f7bb-4886-ac6b-9463dee82666" ChangeDateTime="02/22/2024 04:49:37">
+    <Property Name="ElementName" Value="[dbo].[LeaveStatus].[Leave]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LeaveStatus]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LeaveStatusName" />
+  </Operation>
+</Operations>
