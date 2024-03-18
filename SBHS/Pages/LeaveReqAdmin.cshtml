@@ -1,0 +1,114 @@
+﻿@page
+@model SBHS.Pages.LeaveReqAdminModel
+@{
+}
+
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .table, td, th {
+        border: 1px solid black;
+    }
+
+    .table {
+        background-color: #fff;
+        padding: 20px;
+        border-collapse: collapse;
+        position: center;
+    }
+
+    td {
+        border-collapse: collapse;
+        padding: 0.65em 1em;
+    }
+
+    th {
+        text-align: center;
+    }
+
+</style>
+
+
+<h2>Leave Requests</h2>
+<hr/>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].UserDetail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].LeaveType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].Reason)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].Days)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].UploadDocument)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].LeaveStatus)
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.LeaveRequests) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserDetail.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeaveType.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+                <td>
+                @Html.DisplayFor(modelItem => item.Reason)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Days)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploadDocument)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.LeaveStatus.Id)
+            </td>
+            
+            <td>
+                <form method="post">
+                    <input type="hidden" name="leaveRequestId" value="@item.Id" />
+                    <button type="submit" name="handler" value="Approve" class="btn btn-success">Approve</button>
+                </form>
+                <form method="post">
+                    <input type="hidden" name="leaveRequestId" value="@item.Id" />
+                    <button type="submit" name="handler" value="Reject" class="btn btn-danger">Reject</button>
+                </form>
+            </td>
+            
+        </tr>
+}
+    </tbody>
+</table>

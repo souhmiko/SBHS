@@ -1,0 +1,73 @@
+﻿@page
+@model SBHS.Pages.DepartmentPage.DepartIndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .table, td,th{
+        border: 1px solid black;
+    }
+
+    .table{
+        background-color: #fff;
+        padding: 20px;
+        border-collapse: collapse;
+        position:center;
+    }
+
+    td{
+        border-collapse: collapse;
+        padding: 0.65em 1em;
+    }
+
+    th{
+        text-align:center;
+    }
+
+</style>
+
+
+<h2>Department</h2>
+<hr/>
+<p>
+    <a asp-page="DepartCreate" class="create-button"><i class="fa fa-plus icon-button" aria-hidden="true"></i>New Department</a>
+</p>
+<table class="table" id="department">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Departments[0].DepartmentName)
+            </th>
+            <th>
+                Action
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Departments) {
+        <tr>
+            <td width="50%">
+                @Html.DisplayFor(modelItem => item.DepartmentName)
+            </td>
+            <td width="15%">
+                <a asp-page="./DepartEdit" asp-route-id="@item.Id" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+
+                <a asp-page="./DepartDelete" asp-route-id="@item.Id" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete
+                </a>    
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

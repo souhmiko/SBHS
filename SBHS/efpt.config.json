@@ -18,6 +18,42 @@
       {
          "Name": "[dbo].[Departments]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LeaveConditions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LeaveRequests]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LeaveStatus]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LeaveTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[OncallRequests]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ShiftDetails]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ShiftTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserDetails]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[WorkTitles]",
+         "ObjectType": 0
       }
    ],
    "UiHint": "laptop-hbkud96r\\sqlexpress.SBHS.dbo",

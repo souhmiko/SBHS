@@ -1,5 +1,8 @@
 ﻿CREATE TABLE [dbo].[WorkTitles] (
-    [Id]            INT            NOT NULL IDENTITY,
-    [WorkTitleName] NVARCHAR (MAX) NULL
+    [Id]            INT            NOT NULL,
+    [WorkTitleName] NVARCHAR (MAX) NULL,
+    CONSTRAINT [PK_WorkTitles] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 

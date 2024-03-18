@@ -1,0 +1,69 @@
+﻿@page
+@model SBHS.Pages.WorkTitlePage.WorkIndexModel
+
+@{
+    ViewData["Title"] = "Work Title";
+}
+
+
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .table, td, th {
+        border: 1px solid black;
+    }
+
+    .table {
+        background-color: #fff;
+        padding: 20px;
+        border-collapse: collapse;
+        position: center;
+    }
+
+    td {
+        border-collapse: collapse;
+        padding: 0.65em 1em;
+    }
+
+    th {
+        text-align: center;
+    }
+
+</style>
+
+<h2>Work Title List</h2>
+<hr/>
+<p>
+    <a asp-page="WorkCreate" class="create-button"><i class="fa fa-plus icon-button" aria-hidden="true"></i>Create</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkTitles[0].WorkTitleName)
+            </th>
+            <th>Action</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.WorkTitles) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkTitleName)
+            </td>
+            <td width="20%">
+                <a asp-page="./WorkEdit" asp-route-id="@item.Id" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a asp-page="./WorkDelete" asp-route-id="@item.Id" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete
+                </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

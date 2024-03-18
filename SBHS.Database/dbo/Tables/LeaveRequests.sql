@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[LeaveRequests] (
-    [Id]                     INT             NOT NULL IDENTITY,
+    [Id]                     INT             NOT NULL,
     [UserDetailId]           INT             NOT NULL,
     [LeaveTypeId]            INT             NOT NULL,
     [StartDate]              DATE            NULL,
@@ -12,6 +12,11 @@
     [DateApproved]           DATETIME        NULL,
     [RejectedByUserDetailId] NVARCHAR (450)  NULL,
     [DateRejected]           DATETIME        NULL,
-    CONSTRAINT [PK_LeaveRequests] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_LeaveRequests] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_LeaveRequests_LeaveStatus] FOREIGN KEY ([LeaveStatusId]) REFERENCES [dbo].[LeaveStatus] ([Id]),
+    CONSTRAINT [FK_LeaveRequests_LeaveTypes] FOREIGN KEY ([LeaveTypeId]) REFERENCES [dbo].[LeaveTypes] ([Id]),
+    CONSTRAINT [FK_LeaveRequests_UserDetails] FOREIGN KEY ([UserDetailId]) REFERENCES [dbo].[UserDetails] ([Id])
 );
+
+
 

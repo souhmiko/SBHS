@@ -1,0 +1,123 @@
+﻿@page
+@model SBHS.Pages.OncallFormModel
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/SBHS.styles.css" asp-append-version="true" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<!-- App favicon -->
+<link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+<!-- Plugins css -->
+<link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<!-- Theme Config Js -->
+<script src="~/assets/js/head.js"></script>
+
+<!-- Bootstrap css -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+<!-- App css -->
+<link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Icons css -->
+<link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+<style>
+    .oncall-request h2 {
+        font-size: 26px;
+    }
+
+    .form-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+
+    .center-bottom {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+</style>
+
+
+<div class="form-container">
+    <header class="text-center mb-2">
+        <section class="oncall-request">
+            <h2 class="display-1 h1">On-Call Request Form</h2>
+        </section>
+    </header>
+
+    <!--form-->
+    <form method="post" id="oncallRequestForm" action="/api/OncallRequests">
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" value="@ViewData["FullName"]" readonly>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                <label asp-for="OncallRequest.DepartmentId"></label>
+                <select asp-for="OncallRequest.DepartmentId" asp-items="@(ViewData["Departments"] as SelectList)" class="form-control">
+                    <option value="" disabled selected>Select Department</option>
+                </select>
+                <span asp-validation-for="OncallRequest.DepartmentId" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col">
+                <label asp-for="OncallRequest.DateTimeOnCall"></label>
+                <input asp-for="OncallRequest.DateTimeOnCall" class="form-control" type="date" id="startDate" required>
+                <span asp-validation-for="OncallRequest.DateTimeOnCall" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!--Submit Button-->
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <div class="d-grid">
+                    <button type="submit" id="submitOncallRequestButton" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-grid">
+                    <a class="btn btn-outline-primary" href="/" role="button">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+        
+
+<script src="~/js/oncallRequest.js"></script>

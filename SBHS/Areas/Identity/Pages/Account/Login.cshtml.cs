@@ -21,11 +21,15 @@ namespace SBHS.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -116,6 +120,21 @@ namespace SBHS.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
+
+                    //var user = await _userManager.FindByEmailAsync(Input.Email);
+                    //var roles = await _userManager.GetRolesAsync(user);
+
+                    //if (roles.Contains("Admin"))
+                    //{
+                    //    // Redirect admin to admin page
+                    //    returnUrl = "./Index"; // Redirect admin to admin page
+                    //}
+                    //else if (roles.Contains("User"))
+                    //{
+                    //    // Redirect user to user page
+                    //    returnUrl = "./User"; // Redirect admin to admin page
+                    //}
+
                 }
                 if (result.RequiresTwoFactor)
                 {

@@ -1,0 +1,233 @@
+﻿@page
+@model SBHS.Pages.LeaveReqFormModel
+@{
+    Layout = null;
+}
+
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<!-- App favicon -->
+<link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+<!-- Plugins css -->
+<link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<!-- Theme Config Js -->
+<script src="~/assets/js/head.js"></script>
+
+<!-- Bootstrap css -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+<!-- App css -->
+<link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Icons css -->
+<link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+
+<style>
+    .leave-request h2 {
+        font-size: 26px;
+    }
+
+    .form-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+
+    .center-bottom {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    #dateFields, #timeFields {
+        display: none;
+    }
+
+</style>
+
+
+<div class="form-container">
+    <header class="text-center mb-2">
+        <section class="leave-request">
+            <h2 class="display-1 h1">Leave Request Form</h2>
+        </section>
+    </header>
+
+    <!--form-->
+
+    <form action="/api/LeaveRequests" id="LeaveReqForm" method="post" enctype="multipart/form-data">
+        <!--Name-->
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" value="@ViewData["FullName"]" readonly>
+            </div>
+        </div>
+
+        <!--Details-->
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">Leave Type</label>
+                <select asp-items="@Model.LeaveTypes" class="form-control" id="leaveType">
+                    <option value="" disabled selected>Select Leave Type</option>
+                </select>
+                <span asp-validation-for="LeaveRequest.LeaveTypeId" class="text-danger"></span>  
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="leaveFor">Leave for</label>
+            <select id="leaveFor" onchange="toggleFields()" required>
+                <option value="">-- Select --</option>
+                <option value="days">Leave for Days</option>
+                <option value="hours">Leave for Hours</option>
+            </select>
+        </div>
+
+
+
+        <!--Start & End Date-->
+
+        <div id="dateFields" class="form-group">
+            <div class="row">
+                <div class="col">
+                    <label for="startDate">Start Date</label>
+                    <input asp-for="LeaveRequest.StartDate" class="form-control" type="date" id="startDate" required>
+                    <span asp-validation-for="LeaveRequest.StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="col">
+                    <label for="endDate">End Date</label>
+                    <input asp-for="LeaveRequest.EndDate" class="form-control" type="date" id="endDate" required>
+                    <span asp-validation-for="LeaveRequest.EndDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!--Days-->
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="days">Days</label>
+                    <input asp-for="LeaveRequest.Days" class="form-control" id="days">
+                    <span asp-validation-for="LeaveRequest.Days" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Date Field for Leave for Hours -->
+        <div id="timeFields" class="form-group" style="display: none;">
+
+            <div class="row">
+                <div class="col">
+                    <label for="dateForHours">Select Date</label>
+                    <input type="date" id="dateForHours">
+                </div>
+
+                <div class="col">
+                    <label for="startTime">Start Time</label>
+                    <input type="time" id="startTime" required>
+                </div>
+
+                <div class="col">
+                    <label for="endTime">End Time</label>
+                    <input type="time" id="endTime" required>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- Reason -->
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">Reason</label>
+                <textarea asp-for="LeaveRequest.Reason" class="form-control" placeholder="Enter Reason" id="reason"></textarea>
+                <span asp-validation-for="LeaveRequest.Reason" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Upload Document -->
+        <div class="row mb-3">
+            <div class="col">
+                <label class="form-label">Upload Document</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" id="uploadDocument" aria-describedby="uploadDocumentAddon">
+                    <label class="input-group-text" for="uploadDocument" id="uploadDocumentAddon">Choose file</label>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <div class="d-grid">
+                    <button id="submitLeaveRequestButton" type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-grid">
+                    <a class="btn btn-outline-primary" href="/" role="button">Cancel</a>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+
+
+
+<script>
+    function toggleFields() {
+        var leaveFor = document.getElementById("leaveFor").value;
+        var dateFields = document.getElementById("dateFields");
+        var timeFields = document.getElementById("timeFields");
+
+        if (leaveFor === "days") {
+            dateFields.style.display = "block";
+            timeFields.style.display = "none";
+        } else if (leaveFor === "hours") {
+            dateFields.style.display = "none";
+            timeFields.style.display = "block";
+        } else {
+            dateFields.style.display = "none";
+            timeFields.style.display = "none";
+        }
+    }
+</script>
+
+
+<script src="~/js/leaveRequest.js"></script>

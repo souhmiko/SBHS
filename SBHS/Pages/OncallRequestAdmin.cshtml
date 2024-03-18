@@ -1,0 +1,90 @@
+﻿@page
+@model SBHS.Pages.OncallRequestAdminModel
+
+@{
+    ViewData["Title"] = "OncallRequestAdmin";
+}
+
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .table, td, th {
+        border: 1px solid black;
+    }
+
+    .table {
+        background-color: #fff;
+        padding: 20px;
+        border-collapse: collapse;
+        position: center;
+    }
+
+    td {
+        border-collapse: collapse;
+        padding: 0.65em 1em;
+    }
+
+    th {
+        text-align: center;
+    }
+
+</style>
+
+
+<h2>Oncall Request</h2>
+<hr/>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OncallRequests[0].UserDetail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OncallRequests[0].UserDetail.DepartmentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OncallRequests[0].DateTimeOnCall)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OncallRequests[0].LeaveStatus)
+            </th>
+            <th>
+                Action
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.OncallRequests) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserDetail.AspNetUserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserDetail.DepartmentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTimeOnCall)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeaveStatus.Id)
+            </td>
+            
+            <td>
+                <form method="post">
+                    <input type="hidden" name="leaveRequestId" value="@item.Id" />
+                    <button type="submit" name="handler" value="Approve" class="btn btn-success">Approve</button>
+                </form>
+                <form method="post">
+                    <input type="hidden" name="leaveRequestId" value="@item.Id" />
+                    <button type="submit" name="handler" value="Reject" class="btn btn-danger">Reject</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

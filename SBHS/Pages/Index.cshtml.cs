@@ -14,9 +14,19 @@ namespace SBHS.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToPage("/Admin");
+            }
+            else if (User.IsInRole("User"))
+            {
+                return RedirectToPage("/User");
+            }
 
+            // Default behavior if not in any role
+            return Page();
         }
     }
 }

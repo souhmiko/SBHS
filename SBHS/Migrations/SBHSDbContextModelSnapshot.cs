@@ -17,7 +17,7 @@ namespace SBHS.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.14")
+                .HasAnnotation("ProductVersion", "7.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -47,6 +47,20 @@ namespace SBHS.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Name = "admin",
+                            NormalizedName = "admin"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            Name = "user",
+                            NormalizedName = "user"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -236,6 +250,224 @@ namespace SBHS.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("SBHS.Models.LeaveConditions", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LeaveConditionName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaxAmountofStaffAllowed")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("WorkTitleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkTitleId");
+
+                    b.ToTable("LeaveConditions");
+                });
+
+            modelBuilder.Entity("SBHS.Models.LeaveRequests", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApprovedByUserDetailId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DateApproved")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DateRejected")
+                        .HasColumnType("datetime");
+
+                    b.Property<decimal?>("Days")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("LeaveStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeaveTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RejectedByUserDetailId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<byte[]>("UploadDocument")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("UserDetailId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaveStatusId");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.HasIndex("UserDetailId");
+
+                    b.ToTable("LeaveRequests");
+                });
+
+            modelBuilder.Entity("SBHS.Models.LeaveStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LeaveStatusName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeaveStatus");
+                });
+
+            modelBuilder.Entity("SBHS.Models.LeaveTypes", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LeaveTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LeaveTypes");
+                });
+
+            modelBuilder.Entity("SBHS.Models.OncallRequests", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApprovedByUserDetailId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DateApproved")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DateRejected")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DateTimeOnCall")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeaveStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RejectedByUserDetailId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("UserDetailId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("LeaveStatusId");
+
+                    b.HasIndex("UserDetailId");
+
+                    b.ToTable("OncallRequests");
+                });
+
+            modelBuilder.Entity("SBHS.Models.ShiftDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<int>("ShiftTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserDetailId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShiftTypeId");
+
+                    b.HasIndex("UserDetailId");
+
+                    b.ToTable("ShiftDetails");
+                });
+
+            modelBuilder.Entity("SBHS.Models.ShiftTypes", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShiftTypeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShiftTypes");
+                });
+
+            modelBuilder.Entity("SBHS.Models.UserDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AspNetUserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkTitleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("WorkTitleId");
+
+                    b.ToTable("UserDetails");
+                });
+
+            modelBuilder.Entity("SBHS.Models.WorkTitles", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorkTitleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkTitles");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -285,6 +517,149 @@ namespace SBHS.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SBHS.Models.LeaveConditions", b =>
+                {
+                    b.HasOne("SBHS.Models.WorkTitles", "WorkTitle")
+                        .WithMany("LeaveConditions")
+                        .HasForeignKey("WorkTitleId")
+                        .IsRequired()
+                        .HasConstraintName("FK_LeaveConditions_WorkTitles");
+
+                    b.Navigation("WorkTitle");
+                });
+
+            modelBuilder.Entity("SBHS.Models.LeaveRequests", b =>
+                {
+                    b.HasOne("SBHS.Models.LeaveStatus", "LeaveStatus")
+                        .WithMany("LeaveRequests")
+                        .HasForeignKey("LeaveStatusId")
+                        .IsRequired()
+                        .HasConstraintName("FK_LeaveRequests_LeaveStatus");
+
+                    b.HasOne("SBHS.Models.LeaveTypes", "LeaveType")
+                        .WithMany("LeaveRequests")
+                        .HasForeignKey("LeaveTypeId")
+                        .IsRequired()
+                        .HasConstraintName("FK_LeaveRequests_LeaveTypes");
+
+                    b.HasOne("SBHS.Models.UserDetails", "UserDetail")
+                        .WithMany("LeaveRequests")
+                        .HasForeignKey("UserDetailId")
+                        .IsRequired()
+                        .HasConstraintName("FK_LeaveRequests_UserDetails");
+
+                    b.Navigation("LeaveStatus");
+
+                    b.Navigation("LeaveType");
+
+                    b.Navigation("UserDetail");
+                });
+
+            modelBuilder.Entity("SBHS.Models.OncallRequests", b =>
+                {
+                    b.HasOne("SBHS.Models.Departments", "Department")
+                        .WithMany("OncallRequests")
+                        .HasForeignKey("DepartmentId")
+                        .IsRequired()
+                        .HasConstraintName("FK_OncallRequests_Departments");
+
+                    b.HasOne("SBHS.Models.LeaveStatus", "LeaveStatus")
+                        .WithMany("OncallRequests")
+                        .HasForeignKey("LeaveStatusId")
+                        .IsRequired()
+                        .HasConstraintName("FK_OncallRequests_LeaveStatus");
+
+                    b.HasOne("SBHS.Models.UserDetails", "UserDetail")
+                        .WithMany("OncallRequests")
+                        .HasForeignKey("UserDetailId")
+                        .IsRequired()
+                        .HasConstraintName("FK_OncallRequests_UserDetails");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("LeaveStatus");
+
+                    b.Navigation("UserDetail");
+                });
+
+            modelBuilder.Entity("SBHS.Models.ShiftDetails", b =>
+                {
+                    b.HasOne("SBHS.Models.ShiftTypes", "ShiftType")
+                        .WithMany("ShiftDetails")
+                        .HasForeignKey("ShiftTypeId")
+                        .IsRequired()
+                        .HasConstraintName("FK_ShiftDetails_ShiftTypes");
+
+                    b.HasOne("SBHS.Models.UserDetails", "UserDetail")
+                        .WithMany("ShiftDetails")
+                        .HasForeignKey("UserDetailId")
+                        .IsRequired()
+                        .HasConstraintName("FK_ShiftDetails_UserDetails");
+
+                    b.Navigation("ShiftType");
+
+                    b.Navigation("UserDetail");
+                });
+
+            modelBuilder.Entity("SBHS.Models.UserDetails", b =>
+                {
+                    b.HasOne("SBHS.Models.Departments", "Department")
+                        .WithMany("UserDetails")
+                        .HasForeignKey("DepartmentId")
+                        .IsRequired()
+                        .HasConstraintName("FK_UserDetails_Departments");
+
+                    b.HasOne("SBHS.Models.WorkTitles", "WorkTitle")
+                        .WithMany("UserDetails")
+                        .HasForeignKey("WorkTitleId")
+                        .IsRequired()
+                        .HasConstraintName("FK_UserDetails_WorkTitles");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("WorkTitle");
+                });
+
+            modelBuilder.Entity("SBHS.Models.Departments", b =>
+                {
+                    b.Navigation("OncallRequests");
+
+                    b.Navigation("UserDetails");
+                });
+
+            modelBuilder.Entity("SBHS.Models.LeaveStatus", b =>
+                {
+                    b.Navigation("LeaveRequests");
+
+                    b.Navigation("OncallRequests");
+                });
+
+            modelBuilder.Entity("SBHS.Models.LeaveTypes", b =>
+                {
+                    b.Navigation("LeaveRequests");
+                });
+
+            modelBuilder.Entity("SBHS.Models.ShiftTypes", b =>
+                {
+                    b.Navigation("ShiftDetails");
+                });
+
+            modelBuilder.Entity("SBHS.Models.UserDetails", b =>
+                {
+                    b.Navigation("LeaveRequests");
+
+                    b.Navigation("OncallRequests");
+
+                    b.Navigation("ShiftDetails");
+                });
+
+            modelBuilder.Entity("SBHS.Models.WorkTitles", b =>
+                {
+                    b.Navigation("LeaveConditions");
+
+                    b.Navigation("UserDetails");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,6 +17,24 @@ public partial class SBHSDbContext : IdentityDbContext
 
     public virtual DbSet<Departments> Departments { get; set; }
 
+    public virtual DbSet<LeaveConditions> LeaveConditions { get; set; }
+
+    public virtual DbSet<LeaveRequests> LeaveRequests { get; set; }
+
+    public virtual DbSet<LeaveStatus> LeaveStatus { get; set; }
+
+    public virtual DbSet<LeaveTypes> LeaveTypes { get; set; }
+
+    public virtual DbSet<OncallRequests> OncallRequests { get; set; }
+
+    public virtual DbSet<ShiftDetails> ShiftDetails { get; set; }
+
+    public virtual DbSet<ShiftTypes> ShiftTypes { get; set; }
+
+    public virtual DbSet<UserDetails> UserDetails { get; set; }
+
+    public virtual DbSet<WorkTitles> WorkTitles { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -26,7 +44,127 @@ public partial class SBHSDbContext : IdentityDbContext
             entity.HasKey(e => new { e.LoginProvider, e.ProviderKey, e.UserId });
         });
 
+
         modelBuilder.Entity<Departments>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<LeaveConditions>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.MaxAmountofStaffAllowed).HasMaxLength(450);
+
+            entity.HasOne(d => d.WorkTitle).WithMany(p => p.LeaveConditions)
+                .HasForeignKey(d => d.WorkTitleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LeaveConditions_WorkTitles");
+        });
+
+        modelBuilder.Entity<LeaveRequests>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.ApprovedByUserDetailId).HasMaxLength(450);
+            entity.Property(e => e.DateApproved).HasColumnType("datetime");
+            entity.Property(e => e.DateRejected).HasColumnType("datetime");
+            entity.Property(e => e.Days).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.EndDate).HasColumnType("date");
+            entity.Property(e => e.RejectedByUserDetailId).HasMaxLength(450);
+            entity.Property(e => e.StartDate).HasColumnType("date");
+
+            entity.HasOne(d => d.LeaveStatus).WithMany(p => p.LeaveRequests)
+                .HasForeignKey(d => d.LeaveStatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LeaveRequests_LeaveStatus");
+
+            entity.HasOne(d => d.LeaveType).WithMany(p => p.LeaveRequests)
+                .HasForeignKey(d => d.LeaveTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LeaveRequests_LeaveTypes");
+
+            entity.HasOne(d => d.UserDetail).WithMany(p => p.LeaveRequests)
+                .HasForeignKey(d => d.UserDetailId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_LeaveRequests_UserDetails");
+        });
+
+        modelBuilder.Entity<LeaveStatus>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<LeaveTypes>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<OncallRequests>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.ApprovedByUserDetailId).HasMaxLength(450);
+            entity.Property(e => e.DateApproved).HasColumnType("datetime");
+            entity.Property(e => e.DateRejected).HasColumnType("datetime");
+            entity.Property(e => e.DateTimeOnCall).HasColumnType("datetime");
+            entity.Property(e => e.RejectedByUserDetailId).HasMaxLength(450);
+
+            entity.HasOne(d => d.Department).WithMany(p => p.OncallRequests)
+                .HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OncallRequests_Departments");
+
+            entity.HasOne(d => d.LeaveStatus).WithMany(p => p.OncallRequests)
+                .HasForeignKey(d => d.LeaveStatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OncallRequests_LeaveStatus");
+
+            entity.HasOne(d => d.UserDetail).WithMany(p => p.OncallRequests)
+                .HasForeignKey(d => d.UserDetailId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_OncallRequests_UserDetails");
+        });
+
+        modelBuilder.Entity<ShiftDetails>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Date).HasColumnType("date");
+
+            entity.HasOne(d => d.ShiftType).WithMany(p => p.ShiftDetails)
+                .HasForeignKey(d => d.ShiftTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ShiftDetails_ShiftTypes");
+
+            entity.HasOne(d => d.UserDetail).WithMany(p => p.ShiftDetails)
+                .HasForeignKey(d => d.UserDetailId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ShiftDetails_UserDetails");
+        });
+
+        modelBuilder.Entity<ShiftTypes>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<UserDetails>(entity =>
+        {
+            entity.Property(e => e.AspNetUserId)
+                .IsRequired()
+                .HasMaxLength(450);
+            entity.Property(e => e.FullName)
+                .IsRequired()
+                .HasMaxLength(256);
+
+            entity.HasOne(d => d.Department).WithMany(p => p.UserDetails)
+                .HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserDetails_Departments");
+
+            entity.HasOne(d => d.WorkTitle).WithMany(p => p.UserDetails)
+                .HasForeignKey(d => d.WorkTitleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UserDetails_WorkTitles");
+        });
+
+        modelBuilder.Entity<WorkTitles>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
         });

@@ -45,23 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.14" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.14">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.14">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\assets\libs\c3\src\" />
     <Folder Include="wwwroot\assets\libs\chartist\scss\settings\" />
     <Folder Include="wwwroot\assets\libs\datatables.net-bs5\images\" />
@@ -101,6 +84,23 @@
     <Folder Include="wwwroot\assets\libs\twitter-bootstrap-wizard\examples\" />
     <Folder Include="wwwroot\assets\libs\waypoints\src\" />
     <Folder Include="wwwroot\assets\libs\waypoints\test\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
   </ItemGroup>
 
 </Project>
