@@ -10,7 +10,6 @@ public partial class LeaveRequests
 {
     public int Id { get; set; }
 
-    [Display(Name = "Employees")]
     public int UserDetailId { get; set; }
 
     [Display(Name = "Leave Type")]
