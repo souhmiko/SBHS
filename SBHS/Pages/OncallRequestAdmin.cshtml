@@ -62,26 +62,26 @@
 @foreach (var item in Model.OncallRequests) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserDetail.AspNetUserId)
+                @Html.DisplayFor(modelItem => item.UserDetail.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserDetail.DepartmentId)
+                @Html.DisplayFor(modelItem => item.UserDetail.Department.DepartmentName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateTimeOnCall)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LeaveStatus.Id)
+                @Html.DisplayFor(modelItem => item.LeaveStatus.LeaveStatusName)
             </td>
             
             <td>
                 <form method="post">
                     <input type="hidden" name="leaveRequestId" value="@item.Id" />
-                    <button type="submit" name="handler" value="Approve" class="btn btn-success">Approve</button>
+                        <button type="submit" name="handler" value="Approve" class="btn btn-success custom-btn">Approve</button>
                 </form>
                 <form method="post">
                     <input type="hidden" name="leaveRequestId" value="@item.Id" />
-                    <button type="submit" name="handler" value="Reject" class="btn btn-danger">Reject</button>
+                        <button type="submit" name="handler" value="Reject" class="btn btn-danger custom-btn">Reject</button>
                 </form>
             </td>
         </tr>

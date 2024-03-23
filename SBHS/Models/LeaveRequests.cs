@@ -10,6 +10,7 @@ public partial class LeaveRequests
 {
     public int Id { get; set; }
 
+    [Display(Name = "Employees")]
     public int UserDetailId { get; set; }
 
     [Display(Name = "Leave Type")]
@@ -33,16 +34,16 @@ public partial class LeaveRequests
     [Display(Name = "Document")]
     public byte[] UploadDocument { get; set; }
 
-    [Display(Name = "Approved By")]
+    [Display(Name = "Approved by")]
     public string ApprovedByUserDetailId { get; set; }
 
     [Display(Name = "Date Approved")]
     public DateTime? DateApproved { get; set; }
 
-    [Display(Name = "Rejected By")]
+    [Display(Name = "Rejected by")]
     public string RejectedByUserDetailId { get; set; }
 
-    [Display(Name = "Rejected By")]
+    [Display(Name = "Date Rejected")]
     public DateTime? DateRejected { get; set; }
 
     public virtual LeaveStatus LeaveStatus { get; set; }

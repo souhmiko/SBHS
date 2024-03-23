@@ -9,16 +9,16 @@ namespace SBHS.Models;
 public partial class UserDetails
 {
     public int Id { get; set; }
-
+    
     [Display(Name = "Employees")]
     public string AspNetUserId { get; set; }
-
+    
     [Display(Name = "Department")]
     public int DepartmentId { get; set; }
-
+    
     [Display(Name = "Work Title")]
     public int WorkTitleId { get; set; }
-
+    
     [Display(Name = "Full Name")]
     public string FullName { get; set; }
 

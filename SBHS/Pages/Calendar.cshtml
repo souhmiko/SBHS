@@ -5,11 +5,13 @@
 }
 
 @* <base href="https://demos.telerik.com/kendo-ui/scheduler/basic-usage"> *@
+
 <style>
     html {
         font-size: 14px;
         font-family: Arial, Helvetica, sans-serif;
-    }</style>
+    }
+   </style>
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -26,17 +28,14 @@
 
 
 <div id="example">
-    <div id="team-schedule">
-        <div id="people">
-            
-        </div>
-    </div>
+    
     <div id="scheduler"></div>
 </div>
 
 
 <script>
     $(function () {
+        
         $("#scheduler").kendoScheduler({
             date: new Date("2022/6/13"),
             startTime: new Date("2022/6/13 07:00 AM"),

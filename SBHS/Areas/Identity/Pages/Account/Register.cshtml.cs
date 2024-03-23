@@ -143,6 +143,9 @@ namespace SBHS.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    
+                    // Assign "user" role to the newly created user
+                    await _userManager.AddToRoleAsync(user, "user");
 
 
                     // Create UserDetails record
@@ -154,7 +157,7 @@ namespace SBHS.Areas.Identity.Pages.Account
                         WorkTitleId = Input.WorkTitleId,
                         // Set other properties as needed
                     };
-
+                     
                     _context.UserDetails.Add(userDetails);
                     await _context.SaveChangesAsync();
 

@@ -22,7 +22,7 @@ namespace SBHS.Pages
 
         [BindProperty]
         public LeaveRequests LeaveRequest { get; set; } = new LeaveRequests();
-        public SelectList? LeaveTypes { get; set; } 
+        public int LeaveTypeId { get; set; }
         public string FullName { get; set; } = string.Empty;   // Add a property to hold the user's full name
 
 
@@ -30,11 +30,12 @@ namespace SBHS.Pages
         {
             // Fetch leave types from the server
             var leaveTypes = await _context.LeaveTypes.ToListAsync();
-            LeaveTypes = new SelectList(leaveTypes, "Id", "LeaveTypeName");
+            ViewData["LeaveTypes"] = new SelectList(await _context.LeaveTypes.ToListAsync(), "Id", "LeaveTypeName");
+
 
             // Fetch user details including full name
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userDetails = await _context.UserDetails.SingleOrDefaultAsync(u => u.AspNetUserId == userId);
+            var userDetails = await _context.UserDetails.FirstOrDefaultAsync(u => u.AspNetUserId == userId);
 
             if (userDetails != null)
             {
@@ -47,15 +48,29 @@ namespace SBHS.Pages
         }
 
 
-        public async Task<IActionResult> OnPostSubmitRequest([Bind("UserDetailId, LeaveTypeId, StartDate,EndDate, LeaveStatusId, Reason, Days")] LeaveRequests formData)
+        public async Task<IActionResult> OnPost()
         {
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
+            
             // Set default leave status to "Pending"
             LeaveRequest.LeaveStatusId = GetPendingLeaveStatusId();
+
+
+            // Fetch user details including full name
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDetails = await _context.UserDetails.FirstOrDefaultAsync(u => u.AspNetUserId == userId);
+
+            if (userDetails != null)
+            {
+                // Assign UserDetailId
+                LeaveRequest.UserDetailId = userDetails.Id;
+            }
+
 
             // Save the leave request to the database
             _context.LeaveRequests.Add(LeaveRequest);

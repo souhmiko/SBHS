@@ -1,0 +1,71 @@
+﻿@page
+@model SBHS.Pages.LeaveTypePage.LeaveTypeIndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .table, td, th {
+        border: 1px solid black;
+    }
+
+    .table {
+        background-color: #fff;
+        padding: 20px;
+        border-collapse: collapse;
+        position: center;
+    }
+
+    td {
+        border-collapse: collapse;
+        padding: 0.65em 1em;
+    }
+
+    th {
+        text-align: center;
+    }
+
+</style>
+
+
+<h2>Leave Types</h2>
+<hr />
+
+<p>
+    <a asp-page="LeaveTypeCreate" class="create-button"><i class="fa fa-plus icon-button" aria-hidden="true"></i>Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Leave Types
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.LeaveTypes) {
+        <tr>
+            <td width="50%">
+                @Html.DisplayFor(modelItem => item.LeaveTypeName)
+            </td>
+            <td width="15%">
+                <a asp-page="./LeaveTypeEdit" asp-route-id="@item.Id" class="btn btn-primary custom-btn">
+                    <i class="fas fa-edit"></i>Edit
+                </a>
+                <a asp-page="./LeaveTypeDelete" asp-route-id="@item.Id" class="btn btn-danger custom-btn">
+                    <i class="fas fa-trash"></i>Delete
+                </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

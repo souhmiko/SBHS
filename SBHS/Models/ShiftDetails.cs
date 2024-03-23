@@ -9,13 +9,13 @@ namespace SBHS.Models;
 public partial class ShiftDetails
 {
     public int Id { get; set; }
-
+    
     [Display(Name = "Employees")]
     public int UserDetailId { get; set; }
-
+    
     [Display(Name = "Shift Type")]
     public int ShiftTypeId { get; set; }
-
+    
     [Display(Name = "Date")]
     public DateTime? Date { get; set; }
 

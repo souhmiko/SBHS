@@ -9,7 +9,7 @@ namespace SBHS.Models;
 public partial class WorkTitles
 {
     public int Id { get; set; }
-
+    
     [Display(Name = "Work Title")]
     public string WorkTitleName { get; set; }
 

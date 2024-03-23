@@ -44,15 +44,8 @@ public partial class SBHSDbContext : IdentityDbContext
             entity.HasKey(e => new { e.LoginProvider, e.ProviderKey, e.UserId });
         });
 
-
-        modelBuilder.Entity<Departments>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-        });
-
         modelBuilder.Entity<LeaveConditions>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.MaxAmountofStaffAllowed).HasMaxLength(450);
 
             entity.HasOne(d => d.WorkTitle).WithMany(p => p.LeaveConditions)
@@ -63,7 +56,6 @@ public partial class SBHSDbContext : IdentityDbContext
 
         modelBuilder.Entity<LeaveRequests>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.ApprovedByUserDetailId).HasMaxLength(450);
             entity.Property(e => e.DateApproved).HasColumnType("datetime");
             entity.Property(e => e.DateRejected).HasColumnType("datetime");
@@ -88,19 +80,8 @@ public partial class SBHSDbContext : IdentityDbContext
                 .HasConstraintName("FK_LeaveRequests_UserDetails");
         });
 
-        modelBuilder.Entity<LeaveStatus>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-        });
-
-        modelBuilder.Entity<LeaveTypes>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
-        });
-
         modelBuilder.Entity<OncallRequests>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.ApprovedByUserDetailId).HasMaxLength(450);
             entity.Property(e => e.DateApproved).HasColumnType("datetime");
             entity.Property(e => e.DateRejected).HasColumnType("datetime");
@@ -125,7 +106,6 @@ public partial class SBHSDbContext : IdentityDbContext
 
         modelBuilder.Entity<ShiftDetails>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Date).HasColumnType("date");
 
             entity.HasOne(d => d.ShiftType).WithMany(p => p.ShiftDetails)
@@ -137,11 +117,6 @@ public partial class SBHSDbContext : IdentityDbContext
                 .HasForeignKey(d => d.UserDetailId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ShiftDetails_UserDetails");
-        });
-
-        modelBuilder.Entity<ShiftTypes>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<UserDetails>(entity =>
@@ -162,11 +137,6 @@ public partial class SBHSDbContext : IdentityDbContext
                 .HasForeignKey(d => d.WorkTitleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserDetails_WorkTitles");
-        });
-
-        modelBuilder.Entity<WorkTitles>(entity =>
-        {
-            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         OnModelCreatingPartial(modelBuilder);

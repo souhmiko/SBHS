@@ -83,11 +83,11 @@
 
     <!--form-->
 
-    <form action="/api/LeaveRequests" id="LeaveReqForm" method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         <!--Name-->
         <div class="row mb-3">
             <div class="col">
-                <label class="form-label">Full Name</label>
+                <label asp-for="FullName" class="form-label">Full Name</label>
                 <input type="text" class="form-control" value="@ViewData["FullName"]" readonly>
             </div>
         </div>
@@ -95,8 +95,8 @@
         <!--Details-->
         <div class="row mb-3">
             <div class="col">
-                <label class="form-label">Leave Type</label>
-                <select asp-items="@Model.LeaveTypes" class="form-control" id="leaveType">
+                <label asp-for="LeaveRequest.LeaveTypeId" class="control-label"></label>
+                <select asp-for="LeaveRequest.LeaveTypeId" asp-items="@(ViewData["LeaveTypes"] as SelectList)" class="form-label">
                     <option value="" disabled selected>Select Leave Type</option>
                 </select>
                 <span asp-validation-for="LeaveRequest.LeaveTypeId" class="text-danger"></span>  
@@ -104,20 +104,20 @@
         </div>
 
 
-        <div class="form-group">
+        @* <div class="form-group">
             <label for="leaveFor">Leave for</label>
             <select id="leaveFor" onchange="toggleFields()" required>
                 <option value="">-- Select --</option>
                 <option value="days">Leave for Days</option>
                 <option value="hours">Leave for Hours</option>
             </select>
-        </div>
+        </div> *@
 
 
 
         <!--Start & End Date-->
 
-        <div id="dateFields" class="form-group">
+        <div class="row mb-3">
             <div class="row">
                 <div class="col">
                     <label for="startDate">Start Date</label>
@@ -132,20 +132,25 @@
                 </div>
             </div>
 
-            <!--Days-->
-            <div class="row mb-3">
-                <div class="col">
-                    <label for="days">Days</label>
-                    <input asp-for="LeaveRequest.Days" class="form-control" id="days">
-                    <span asp-validation-for="LeaveRequest.Days" class="text-danger"></span>
-                </div>
-
-            </div>
+           
+            
         </div>
 
 
+
+        <!--Days-->
+
+        <div class="row mb-3">
+            <div class="col">
+                <label for="days">Days</label>
+                <input asp-for="LeaveRequest.Days" class="form-control" id="days">
+                <span asp-validation-for="LeaveRequest.Days" class="text-danger"></span>
+            </div>
+
+        </div>
+
         <!-- Date Field for Leave for Hours -->
-        <div id="timeFields" class="form-group" style="display: none;">
+        @* <div id="timeFields" class="form-group" style="display: none;">
 
             <div class="row">
                 <div class="col">
@@ -163,7 +168,7 @@
                     <input type="time" id="endTime" required>
                 </div>
             </div>
-        </div>
+        </div> *@
 
 
 
@@ -193,7 +198,7 @@
         <div class="row mb-3">
             <div class="col-sm-6">
                 <div class="d-grid">
-                    <button id="submitLeaveRequestButton" type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -211,23 +216,21 @@
 
 
 <script>
-    function toggleFields() {
-        var leaveFor = document.getElementById("leaveFor").value;
-        var dateFields = document.getElementById("dateFields");
-        var timeFields = document.getElementById("timeFields");
+    // function toggleFields() {
+    //     var leaveFor = document.getElementById("leaveFor").value;
+    //     var dateFields = document.getElementById("dateFields");
+    //     var timeFields = document.getElementById("timeFields");
 
-        if (leaveFor === "days") {
-            dateFields.style.display = "block";
-            timeFields.style.display = "none";
-        } else if (leaveFor === "hours") {
-            dateFields.style.display = "none";
-            timeFields.style.display = "block";
-        } else {
-            dateFields.style.display = "none";
-            timeFields.style.display = "none";
-        }
-    }
+    //     if (leaveFor === "days") {
+    //         dateFields.style.display = "block";
+    //         timeFields.style.display = "none";
+    //     } else if (leaveFor === "hours") {
+    //         dateFields.style.display = "none";
+    //         timeFields.style.display = "block";
+    //     } else {
+    //         dateFields.style.display = "none";
+    //         timeFields.style.display = "none";
+    //     }
+    // }
 </script>
 
-
-<script src="~/js/leaveRequest.js"></script>

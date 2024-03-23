@@ -20,7 +20,7 @@ namespace SBHS.Pages
 
         [BindProperty]
         public OncallRequests OncallRequest { get; set; } = new OncallRequests();
-        public SelectList DepartmentId { get; set; }
+        public int DepartmentId { get; set; }
         public string FullName { get; set; } = string.Empty;
 
         public async Task OnGetAsync()
@@ -29,15 +29,14 @@ namespace SBHS.Pages
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
             var userDetails = await _context.UserDetails
+                .Include(u => u.Department)
                 .FirstOrDefaultAsync(u => u.AspNetUserId == userId);
 
-            var departments = await _context.Departments.ToListAsync();
-            ViewData["Departments"] = new SelectList(await _context.Departments.ToListAsync(), "Id", "DepartmentName");
-
-
+            
             if (userDetails != null)
             {
                 ViewData["FullName"] = userDetails.FullName;
+                ViewData["Department"] = userDetails.Department.DepartmentName;
 
                 // Assign UserDetailId
                 OncallRequest.UserDetailId = userDetails.Id;
@@ -45,38 +44,33 @@ namespace SBHS.Pages
         }
 
 
-        public async Task<IActionResult> OnPostSubmitRequest([Bind("UserDetailId, DepartmentId, DateTimeOnCall, LeaveStatusId")] OncallRequests formData)
+        public async Task<IActionResult> OnPost()
         {
-            //Validate and process the form data
             if (ModelState.IsValid)
             {
                 return Page();
             }
 
-            // Get the current user's ID
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Find the associated UserDetails using the AspNetUserId
-            var userDetails = await _context.UserDetails
-                .FirstOrDefaultAsync(u => u.AspNetUserId == userId);
-
-            if (userDetails == null)
-            {
-                // Handle case where user details are not found
-                return BadRequest("User details not found.");
-            }
-
-            // Assign the UserDetailId to the on-call request
-            OncallRequest.UserDetailId = userDetails.Id;
-
-            // Assign the DepartmentId to the on-call request
-            OncallRequest.DepartmentId = userDetails.DepartmentId;
-
-            // Assign the datetimeoncall to the on-call request
-            OncallRequest.DateTimeOnCall = OncallRequest.DateTimeOnCall;
-
             // Set default leave status to "Pending"
             OncallRequest.LeaveStatusId = GetPendingLeaveStatusId();
+            
+
+            // Get the current user's ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDetails = await _context.UserDetails
+                .Include(u => u.Department)
+                .FirstOrDefaultAsync(u => u.AspNetUserId == userId);
+
+            if (userDetails != null)
+            {
+                // Assign UserDetailId
+                OncallRequest.UserDetailId = userDetails.Id;
+                OncallRequest.DepartmentId = userDetails.DepartmentId;
+
+            }
+
+            
+            
 
             // Save the on-call request to the database
             _context.OncallRequests.Add(OncallRequest);

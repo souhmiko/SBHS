@@ -6,6 +6,14 @@
     html {
     font-size: 16px;
   }
+
+    .btn-primary, .btn-danger{
+        margin-top: 10px;
+    }
+
+    .table, td, th {
+        text-align:center;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -32,12 +40,33 @@ body {
     border-radius: 5px;
 }
 
-    .create-button:hover {
-        color: #f3f3f3;
-    }
+.create-button:hover {
+    color: #f3f3f3;
+}
 
 .icon-button {
     margin-right: 10px;
 }
 
+.btn-primary {
+    background-color: #007bff; /* Set the primary button color */
+    border-color: #007bff;
+}
 
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker color on hover */
+    border-color: #0056b3;
+}
+
+.btn-secondary {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.custom-btn {
+    width: 100px;
+}
+
+.btn-outline-primary{
+    margin-top: 10px;
+}

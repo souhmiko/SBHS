@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[LeaveRequests] (
-    [Id]                     INT             NOT NULL,
+    [Id]                     INT             IDENTITY (1, 1) NOT NULL,
     [UserDetailId]           INT             NOT NULL,
     [LeaveTypeId]            INT             NOT NULL,
     [StartDate]              DATE            NULL,
@@ -17,6 +17,8 @@
     CONSTRAINT [FK_LeaveRequests_LeaveTypes] FOREIGN KEY ([LeaveTypeId]) REFERENCES [dbo].[LeaveTypes] ([Id]),
     CONSTRAINT [FK_LeaveRequests_UserDetails] FOREIGN KEY ([UserDetailId]) REFERENCES [dbo].[UserDetails] ([Id])
 );
+
+
 
 
 

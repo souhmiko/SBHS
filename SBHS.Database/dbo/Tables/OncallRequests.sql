@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[OncallRequests] (
-    [Id]                     INT            NOT NULL,
+    [Id]                     INT            IDENTITY (1, 1) NOT NULL,
     [UserDetailId]           INT            NOT NULL,
     [DepartmentId]           INT            NOT NULL,
     [DateTimeOnCall]         DATETIME       NULL,
@@ -9,9 +9,14 @@
     [DateRejected]           DATETIME       NULL,
     [LeaveStatusId]          INT            NOT NULL,
     CONSTRAINT [PK_OncallRequests] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_OncallRequests_Departments] FOREIGN KEY ([DepartmentId]) REFERENCES [dbo].[Departments] ([Id]),
     CONSTRAINT [FK_OncallRequests_LeaveStatus] FOREIGN KEY ([LeaveStatusId]) REFERENCES [dbo].[LeaveStatus] ([Id]),
     CONSTRAINT [FK_OncallRequests_UserDetails] FOREIGN KEY ([UserDetailId]) REFERENCES [dbo].[UserDetails] ([Id])
 );
+
+
+
+
 
 
 

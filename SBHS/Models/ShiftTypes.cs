@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SBHS.Models;
 
@@ -9,6 +10,7 @@ public partial class ShiftTypes
 {
     public int Id { get; set; }
 
+    [Display(Name = "Shift Type")]
     public string ShiftTypeName { get; set; }
 
     public virtual ICollection<ShiftDetails> ShiftDetails { get; set; } = new List<ShiftDetails>();

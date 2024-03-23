@@ -4,15 +4,19 @@ async function submitLeaveRequest() {
     try {
         // Fetch form data
         const formData = new FormData(document.getElementById('LeaveReqForm'));
+
+        
         // Make POST request to API endpoint
         const response = await fetch('/api/LeaveRequests', {
             method: 'POST',
             body: formData
         });
+
         // Check if request was successful
         if (response.ok) {
-            // Redirect to confirmation page or handle success scenario
-            window.location.href = '/ConfirmationLeaveRequestPage';
+            // Display a success message or perform any other action
+            console.log('Leave request submitted successfully');
+            alert('Leave request submitted successfully');
         } else {
             // Handle error scenario
             console.error('Failed to submit leave request');

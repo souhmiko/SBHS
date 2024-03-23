@@ -7,38 +7,35 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SBHS.Models;
 
-namespace SBHS.Pages.LeaveReqAdmin
+namespace SBHS.Pages.LeaveTypePage
 {
-    public class CreateModel : PageModel
+    public class LeaveTypeCreateModel : PageModel
     {
         private readonly SBHS.Models.SBHSDbContext _context;
 
-        public CreateModel(SBHS.Models.SBHSDbContext context)
+        public LeaveTypeCreateModel(SBHS.Models.SBHSDbContext context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["LeaveStatusId"] = new SelectList(_context.LeaveStatus, "Id", "LeaveStatusName");
-        ViewData["LeaveTypeId"] = new SelectList(_context.LeaveTypes, "Id", "LeaveTypeName");
-        ViewData["UserDetailId"] = new SelectList(_context.UserDetails, "Id", "AspNetUserId");
             return Page();
         }
 
         [BindProperty]
-        public LeaveRequests LeaveRequests { get; set; } = default!;
+        public LeaveTypes LeaveTypes { get; set; } = default!;
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid || _context.LeaveRequests == null || LeaveRequests == null)
+          if (!ModelState.IsValid || _context.LeaveTypes == null || LeaveTypes == null)
             {
                 return Page();
             }
 
-            _context.LeaveRequests.Add(LeaveRequests);
+            _context.LeaveTypes.Add(LeaveTypes);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

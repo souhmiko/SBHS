@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,12 +18,10 @@ namespace SBHS.Controller
     public class LeaveRequestsController : ControllerBase
     {
         private readonly SBHSDbContext _context;
-        private readonly UserManager<UserDetails> _userManager;
 
-        public LeaveRequestsController(SBHSDbContext context, UserManager<UserDetails> userManager)
+        public LeaveRequestsController(SBHSDbContext context)
         {
             _context = context;
-            _userManager = userManager;
             LeaveRequest = new LeaveRequests();
         }
 
@@ -62,24 +61,32 @@ namespace SBHS.Controller
             return leaveRequests;
         }
 
-        
+         
 
         // POST: api/LeaveRequests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LeaveRequests>> PostLeaveRequests([FromBody] LeaveRequests leaveRequests)
+        public async Task<ActionResult<LeaveRequests>> PostLeaveRequests([FromForm] LeaveRequests leaveRequests)
         {
 
-            //Get the current user's details
-            var currentUser = await _userManager.GetUserAsync(User);
-            if(currentUser == null)
+            // Retrieve the UserDetailId based on the logged-in user's ID
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userDetails = await _context.UserDetails.FirstOrDefaultAsync(u => u.AspNetUserId == userId);
+            if (userDetails == null)
             {
-                return BadRequest("Unable to find current user");
+                return BadRequest("Unable to find user details for current user");
             }
 
+            // Associate the UserDetailId with the leave request
 
-            // Associate the leave request with the current user
-            leaveRequests.UserDetailId = currentUser.Id;
+            leaveRequests.UserDetailId = userDetails.Id;
+
+           
+            // Set the leave status to "Pending" (assuming "Pending" has an Id of 2)
+
+            leaveRequests.LeaveStatusId = 2; // Assuming "Pending" has an Id of 2
+
 
 
             if (!ModelState.IsValid)
@@ -95,6 +102,7 @@ namespace SBHS.Controller
                 LeaveTypeId = LeaveRequest.LeaveTypeId,
                 Reason = LeaveRequest.Reason,
                 Days = LeaveRequest.Days,
+                LeaveStatusId = 2
             };
 
 

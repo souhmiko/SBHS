@@ -25,6 +25,7 @@ namespace SBHS.Pages
             if (_context.OncallRequests != null)
             {
                 OncallRequests = await _context.OncallRequests
+                .Include(o => o.Department)
                 .Include(o => o.LeaveStatus)
                 .Include(o => o.UserDetail).ToListAsync();
             }

@@ -75,10 +75,10 @@
                 @Html.DisplayFor(modelItem => item.WorkTitle.WorkTitleName)
             </td>
             <td width="20%">
-                <a asp-page="./EmployEdit" asp-route-id="@item.Id" class="btn btn-primary">
+                <a asp-page="./EmployEdit" asp-route-id="@item.Id" class="btn btn-primary custom-btn">
                     <i class="fas fa-edit"></i> Edit
                 </a>
-                <a asp-page="./EmployDelete" asp-route-id="@item.Id" class="btn btn-danger">
+                <a asp-page="./EmployDelete" asp-route-id="@item.Id" class="btn btn-danger custom-btn">
                     <i class="fas fa-trash"></i> Delete
                 </a>
             </td>
