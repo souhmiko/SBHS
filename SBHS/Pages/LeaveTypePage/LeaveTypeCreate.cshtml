@@ -19,17 +19,12 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="LeaveTypes.Id" class="control-label"></label>
-                <input asp-for="LeaveTypes.Id" class="form-control" />
-                <span asp-validation-for="LeaveTypes.Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="LeaveTypes.LeaveTypeName" class="control-label"></label>
                 <input asp-for="LeaveTypes.LeaveTypeName" class="form-control" />
                 <span asp-validation-for="LeaveTypes.LeaveTypeName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary custom-btn" style="margin-top:10px" />
+                <input type="submit" value="Create" class="btn btn-primary" style="margin-top:10px" />
                 <a asp-page="LeaveTypeIndex" class="btn btn-secondary" style="margin-top:10px; margin-left: 10px;">Back to List</a>
             </div>
         </form>

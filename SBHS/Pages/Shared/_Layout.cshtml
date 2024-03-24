@@ -34,6 +34,11 @@
     <!-- Begin page -->
     <div id="wrapper">
 
+        <div id="preloader">
+            <div id="status">
+                <div class="spinner">Loading...</div>
+            </div>
+        </div>
 
         <!-- ========== Menu ========== -->
         <div class="app-menu">
@@ -126,12 +131,16 @@
                                         <span class="menu-text">On-call Requests</span>
                                     </a>
                                 </li>
-                                
                             </ul>
                         </div>
                     </li>
 
-
+                    <li class="menu-item">
+                        <a href="~/RequestHistory" class="menu-link">
+                            <span class="menu-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                            <span class="menu-text"> History </span>
+                        </a>
+                    </li>
 
                     <li class="menu-item">
                         <a href="#menuEcommerce" data-bs-toggle="collapse" class="menu-link">

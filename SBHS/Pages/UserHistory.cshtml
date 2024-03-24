@@ -1,0 +1,68 @@
+﻿@page
+@model SBHS.Pages.UserHistoryModel
+@{
+    Layout = null;
+}
+
+<h2>Leave Request History</h2>
+<hr />
+
+@if (Model.LeaveRequests.Any())
+{
+    <h3>Your Leave Requests</h3>
+    <ul>
+        @foreach (var leaveRequest in Model.LeaveRequests)
+        {
+            <li>
+                <strong>Employee:</strong> @leaveRequest.UserDetail.FullName<br />
+                <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
+                <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
+                <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
+                <strong>Reason:</strong> @leaveRequest.Reason<br />
+                <strong>Days:</strong> @leaveRequest.Days<br />
+                <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
+                <hr />
+            </li>
+        }
+    </ul>
+}
+@if (Model.AdminApprovedRequests.Any())
+{
+    <h3>Approved Requests</h3>
+    <ul>
+        @foreach (var leaveRequest in Model.AdminApprovedRequests)
+        {
+            <li>
+                <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
+                <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
+                <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
+                <strong>Reason:</strong> @leaveRequest.Reason<br />
+                <strong>Days:</strong> @leaveRequest.Days<br />
+                <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
+                <hr />
+            </li>
+        }
+    </ul>
+}
+@if (Model.AdminRejectedRequests.Any())
+{
+    <h3>Rejected Requests</h3>
+    <ul>
+        @foreach (var leaveRequest in Model.AdminRejectedRequests)
+        {
+            <li>
+                <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
+                <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
+                <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
+                <strong>Reason:</strong> @leaveRequest.Reason<br />
+                <strong>Days:</strong> @leaveRequest.Days<br />
+                <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
+                <hr />
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No leave requests found.</p>
+}

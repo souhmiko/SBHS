@@ -1,0 +1,59 @@
+﻿@page
+@model SBHS.Pages.RequestHistoryModel
+@{
+}
+
+<h2>Requests History</h2>
+<hr/>
+<ul>
+    @foreach (var leaveRequest in Model.ApprovedLeaveRequests)
+    {
+        <li>
+            <strong>Employee:</strong> @leaveRequest.UserDetail.FullName<br />
+            <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
+            <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
+            <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
+            <strong>Reason:</strong> @leaveRequest.Reason<br />
+            <strong>Days:</strong> @leaveRequest.Days<br />
+            <strong>Status:</strong> Approved<br />
+            <hr />
+        </li>
+    }
+
+    @foreach (var leaveRequest in Model.RejectedLeaveRequests)
+    {
+        <li>
+            <strong>Employee:</strong> @leaveRequest.UserDetail.FullName<br />
+            <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
+            <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
+            <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
+            <strong>Reason:</strong> @leaveRequest.Reason<br />
+            <strong>Days:</strong> @leaveRequest.Days<br />
+            <strong>Status:</strong> Rejected<br />
+            <hr />
+        </li>
+    }
+</ul>
+
+
+<ul>
+    @foreach (var oncallRequest in Model.ApprovedOncallRequests)
+    {
+        <li>
+            <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
+            <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
+            <strong>Status:</strong> Approved<br />
+            <hr />
+        </li>
+    }
+
+    @foreach (var oncallRequest in Model.RejectedOncallRequests)
+    {
+        <li>
+            <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
+            <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
+            <strong>Status:</strong> Rejected<br />
+            <hr />
+        </li>
+    }
+</ul>

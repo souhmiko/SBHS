@@ -104,17 +104,6 @@
         </div>
 
 
-        @* <div class="form-group">
-            <label for="leaveFor">Leave for</label>
-            <select id="leaveFor" onchange="toggleFields()" required>
-                <option value="">-- Select --</option>
-                <option value="days">Leave for Days</option>
-                <option value="hours">Leave for Hours</option>
-            </select>
-        </div> *@
-
-
-
         <!--Start & End Date-->
 
         <div class="row mb-3">
@@ -149,28 +138,7 @@
 
         </div>
 
-        <!-- Date Field for Leave for Hours -->
-        @* <div id="timeFields" class="form-group" style="display: none;">
-
-            <div class="row">
-                <div class="col">
-                    <label for="dateForHours">Select Date</label>
-                    <input type="date" id="dateForHours">
-                </div>
-
-                <div class="col">
-                    <label for="startTime">Start Time</label>
-                    <input type="time" id="startTime" required>
-                </div>
-
-                <div class="col">
-                    <label for="endTime">End Time</label>
-                    <input type="time" id="endTime" required>
-                </div>
-            </div>
-        </div> *@
-
-
+        
 
 
         <!-- Reason -->
@@ -211,26 +179,4 @@
     </form>
 
 </div>
-
-
-
-
-<script>
-    // function toggleFields() {
-    //     var leaveFor = document.getElementById("leaveFor").value;
-    //     var dateFields = document.getElementById("dateFields");
-    //     var timeFields = document.getElementById("timeFields");
-
-    //     if (leaveFor === "days") {
-    //         dateFields.style.display = "block";
-    //         timeFields.style.display = "none";
-    //     } else if (leaveFor === "hours") {
-    //         dateFields.style.display = "none";
-    //         timeFields.style.display = "block";
-    //     } else {
-    //         dateFields.style.display = "none";
-    //         timeFields.style.display = "none";
-    //     }
-    // }
-</script>
 
