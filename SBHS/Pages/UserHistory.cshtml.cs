@@ -15,9 +15,10 @@ namespace SBHS.Pages
             _context = context;
         }
 
-        public IList<LeaveRequests> LeaveRequests { get; set; }
-        public IList<LeaveRequests> AdminApprovedRequests { get; set; }
-        public IList<LeaveRequests> AdminRejectedRequests { get; set; }
+        public IList<LeaveRequests> LeaveRequests { get; set; } = default!;
+        public IList<OncallRequests> OncallRequests { get; set; } = default!;
+        public IList<LeaveRequests> AdminApprovedRequests { get; set; } = default!;
+        public IList<LeaveRequests> AdminRejectedRequests { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
@@ -30,6 +31,12 @@ namespace SBHS.Pages
                 LeaveRequests = await _context.LeaveRequests
                     .Include(l => l.LeaveStatus)
                     .Include(l => l.LeaveType)
+                    .Where(l => l.UserDetailId == GetUserDetailId(userId))
+                    .ToListAsync();
+
+                // Retrieve oncall requests associated with the UserDetailId of the logged-in user
+                OncallRequests = await _context.OncallRequests
+                    .Include(l => l.LeaveStatus)
                     .Where(l => l.UserDetailId == GetUserDetailId(userId))
                     .ToListAsync();
 

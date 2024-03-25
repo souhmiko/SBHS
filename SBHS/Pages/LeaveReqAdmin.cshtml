@@ -29,6 +29,23 @@
         text-align: center;
     }
 
+    p {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .status-approved {
+        color: green; /* Green color for approved status */
+    }
+
+    .status-pending {
+        color: orange; /* Orange color for pending status */
+    }
+
+    .status-rejected {
+        color: red; /* Red color for rejected status */
+    }
+
 </style>
 
 
@@ -104,7 +121,25 @@
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.LeaveStatus.LeaveStatusName)
+                        @{
+                            string statusColorClass = "";
+                            switch (item.LeaveStatus.LeaveStatusName)
+                            {
+                                case "Approved":
+                                    statusColorClass = "status-approved";
+                                    break;
+                                case "Pending":
+                                    statusColorClass = "status-pending";
+                                    break;
+                                case "Rejected":
+                                    statusColorClass = "status-rejected";
+                                    break;
+                                default:
+                                    statusColorClass = "";
+                                    break;
+                            }
+                        }
+                        <span class="@statusColorClass">@Html.DisplayFor(modelItem => item.LeaveStatus.LeaveStatusName)</span>
                     </td>
 
                     <td>
@@ -127,6 +162,5 @@
 }
 else
 {
-    <p>No leave requests</p>
+    <p>No leave request</p>
 }
-

@@ -4,65 +4,154 @@
     Layout = null;
 }
 
-<h2>Leave Request History</h2>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 20px;
+        flex-grow: 1;
+    }
+
+    .card-container {
+        display: flex; /* Use flexbox to arrange cards horizontally */
+        flex-wrap: wrap; /* Allow cards to wrap to the next row */
+        justify-content: flex-start; /* Distribute space between cards */
+        margin-bottom: 20px; /* Add some bottom margin for spacing */
+    }
+
+    .card {
+        border: 1px solid #333;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+        width: calc(20% - 10px); /* Set the width of each card to fit two cards in a row with space between them */
+        box-sizing: border-box;
+        margin-right: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box-shadow for a subtle shadow effect */
+    }
+
+        .card strong {
+            font-weight: bold;
+            display: inline-block;
+            width: 120px;
+        }
+
+    .approved {
+        background-color: #c8e6c9; /* Light green for approved requests */
+    }
+
+    .rejected {
+        background-color: #ffcdd2; /* Light red for rejected requests */
+    }
+
+    .card-content{
+        padding:10px;
+    }
+    
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Change this to flex-start */
+        margin-bottom: 20px;
+    }
+
+    .back-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 16px;
+        cursor: pointer;
+        margin-right: 10px; /* Add margin to separate the button from h2 */
+    }
+
+
+</style>
+
+<div class="header">
+    <a class="back-button" href="/User"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>Leave Request History</h2>
+</div>
 <hr />
 
-@if (Model.LeaveRequests.Any())
-{
-    <h3>Your Leave Requests</h3>
-    <ul>
-        @foreach (var leaveRequest in Model.LeaveRequests)
-        {
-            <li>
-                <strong>Employee:</strong> @leaveRequest.UserDetail.FullName<br />
-                <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
-                <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
-                <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
-                <strong>Reason:</strong> @leaveRequest.Reason<br />
-                <strong>Days:</strong> @leaveRequest.Days<br />
-                <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
-                <hr />
-            </li>
-        }
-    </ul>
-}
-@if (Model.AdminApprovedRequests.Any())
-{
-    <h3>Approved Requests</h3>
-    <ul>
-        @foreach (var leaveRequest in Model.AdminApprovedRequests)
-        {
-            <li>
-                <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
-                <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
-                <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
-                <strong>Reason:</strong> @leaveRequest.Reason<br />
-                <strong>Days:</strong> @leaveRequest.Days<br />
-                <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
-                <hr />
-            </li>
-        }
-    </ul>
-}
-@if (Model.AdminRejectedRequests.Any())
-{
-    <h3>Rejected Requests</h3>
-    <ul>
-        @foreach (var leaveRequest in Model.AdminRejectedRequests)
-        {
-            <li>
-                <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
-                <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
-                <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
-                <strong>Reason:</strong> @leaveRequest.Reason<br />
-                <strong>Days:</strong> @leaveRequest.Days<br />
-                <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
-                <hr />
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>No leave requests found.</p>
-}
+<div class="card-content">
+
+    @if (Model.LeaveRequests.Any())
+    {
+        <h3>Leave Requests</h3>
+        <div class="card-container">
+            @foreach (var leaveRequest in Model.LeaveRequests)
+            {
+                <div class="card">
+                    <strong>Employee:</strong> @leaveRequest.UserDetail.FullName<br />
+                    <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
+                    <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
+                    <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
+                    <strong>Reason:</strong> @leaveRequest.Reason<br />
+                    <strong>Days:</strong> @leaveRequest.Days<br />
+                    <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
+                </div>
+            }
+        </div>
+    }
+
+    @if (Model.OncallRequests.Any())
+    {
+        <h3>Oncall Requests</h3>
+        <div class="card-container">
+            @foreach (var oncallRequest in Model.OncallRequests)
+            {
+                <div class="card">
+                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
+                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
+                    <strong>Status:</strong> @oncallRequest.LeaveStatus.LeaveStatusName<br />
+                </div>
+            }
+        </div>
+    }
+
+    @if (Model.AdminApprovedRequests.Any())
+    {
+        <h3>Approved Requests</h3>
+        <div class="card-container">
+            @foreach (var leaveRequest in Model.AdminApprovedRequests)
+            {
+                <div class="card approved">
+                    <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
+                    <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
+                    <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
+                    <strong>Reason:</strong> @leaveRequest.Reason<br />
+                    <strong>Days:</strong> @leaveRequest.Days<br />
+                    <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
+                </div>
+            }
+        </div>
+    }
+
+    @if (Model.AdminRejectedRequests.Any())
+    {
+        <h3>Rejected Requests</h3>
+        <div class="card-container">
+            @foreach (var leaveRequest in Model.AdminRejectedRequests)
+            {
+                <div class="card rejected">
+                    <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
+                    <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
+                    <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
+                    <strong>Reason:</strong> @leaveRequest.Reason<br />
+                    <strong>Days:</strong> @leaveRequest.Days<br />
+                    <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
+                </div>
+            }
+        </div>
+    }
+
+    @if (!Model.LeaveRequests.Any() && !Model.AdminApprovedRequests.Any() && !Model.AdminRejectedRequests.Any())
+    {
+        <p>No leave requests found.</p>
+    }
+
+</div>
