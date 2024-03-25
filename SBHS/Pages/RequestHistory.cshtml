@@ -9,56 +9,42 @@
         margin-top:20px;
     }
 
-    .card {
+    .card-body{
+        display: flex; /* Use flexbox to arrange cards horizontally */
+        flex-wrap: wrap; /* Allow cards to wrap to the next row */
+        justify-content: flex-start; /* Distribute space between cards */
+        margin-bottom: 20px; /* Add some bottom margin for spacing */
+    }
+
+    .request-card {
         border: 1px solid #ccc;
         border-radius: 5px;
         padding: 10px;
-        margin-right: 10px; /* Add margin between cards */
-        background-color: #f9f9f9;
-        width: calc(50% - 15px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .card-header {
-        font-weight: bold;
-        margin-bottom: 5px;
-
-    }
-
-    .card-body {
-        margin-bottom: 5px;
-        padding: 5px;
-    }
-
-    .card-body strong{
-        font-weight: bold;
-        display: inline-block;
-        width: 120px;
-    }
-
-    .card-container {
-        display: flex; /* Use flexbox to arrange cards horizontally */
-        flex-wrap: wrap; /* Allow cards to wrap to the next row */
-        justify-content: space-between; /* Distribute space between cards */
+        margin-bottom: 20px;
+        width: calc(30% - 10px); /* Adjust the width to fit two cards in a row */
+        box-sizing: border-box;
+        margin-right: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box-shadow for a subtle shadow effect */
     }
 
     .status-approved {
         background-color: green;
         color: white;
-        border-radius: 10px;
-        padding:3px;
+        border-radius: 30px;
+        padding: 3px;
     }
 
     .status-rejected {
         background-color: red;
         color: white;
-        border-radius: 10px;
+        border-radius: 30px;
         padding: 3px;
+    }
+
+    .request-card strong {
+        font-weight: bold;
+        display: inline-block;
+        width: 120px;
     }
 
 </style>
@@ -68,17 +54,14 @@
 
 <div class="card-container">
     <div class="card">
-    <div class="card-header">
-        <h3>Approved Leave Requests</h3>
-    </div>
-    <div class="card-body">
-        @foreach (var leaveRequest in Model.ApprovedLeaveRequests)
-        {
-            <div class="card">
-                <div class="card-header">
-                    @leaveRequest.UserDetail.FullName
-                </div>
-                <div class="card-body">
+        <div class="card-header">
+            <h3>Approved Leave Requests</h3>
+        </div>
+        <div class="card-body">
+            @foreach (var leaveRequest in Model.ApprovedLeaveRequests)
+            {
+                <div class="request-card">
+                    <strong>Employee:</strong> @leaveRequest.UserDetail.FullName<br />
                     <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
                     <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
                     <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
@@ -86,23 +69,19 @@
                     <strong>Days:</strong> @leaveRequest.Days<br />
                     <strong>Status:</strong> <span class="status-approved">@leaveRequest.LeaveStatus.LeaveStatusName</span><br />
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
 
     <div class="card">
-    <div class="card-header">
-        <h3>Rejected Leave Requests</h3>
-    </div>
-    <div class="card-body">
-        @foreach (var leaveRequest in Model.RejectedLeaveRequests)
-        {
-            <div class="card">
-                <div class="card-header">
-                    @leaveRequest.UserDetail.FullName
-                </div>
-                <div class="card-body">
+        <div class="card-header">
+            <h3>Rejected Leave Requests</h3>
+        </div>
+        <div class="card-body">
+            @foreach (var leaveRequest in Model.RejectedLeaveRequests)
+            {
+                <div class="request-card">
+                    <strong>Employee:</strong> @leaveRequest.UserDetail.FullName<br />
                     <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
                     <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
                     <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
@@ -110,30 +89,25 @@
                     <strong>Days:</strong> @leaveRequest.Days<br />
                     <strong>Status:</strong> <span class="status-rejected">@leaveRequest.LeaveStatus.LeaveStatusName</span><br />
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
 
     <div class="card">
-    <div class="card-header">
-        <h3>Approved Oncall Requests</h3>
-    </div>
-    <div class="card-body">
-        @foreach (var oncallRequest in Model.ApprovedOncallRequests)
-        {
-            <div class="card">
-                <div class="card-header">
-                    @oncallRequest.UserDetail.FullName
-                </div>
-                <div class="card-body">
+        <div class="card-header">
+            <h3>Approved Oncall Requests</h3>
+        </div>
+        <div class="card-body">
+            @foreach (var oncallRequest in Model.ApprovedOncallRequests)
+            {
+                <div class="request-card">
+                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
                     <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
                     <strong>Status:</strong> <span class="status-approved">@oncallRequest.LeaveStatus.LeaveStatusName</span><br />
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
 
     <div class="card">
         <div class="card-header">
@@ -142,17 +116,12 @@
         <div class="card-body">
             @foreach (var oncallRequest in Model.RejectedOncallRequests)
             {
-                <div class="card">
-                    <div class="card-header">
-                        @oncallRequest.UserDetail.FullName
-                    </div>
-                    <div class="card-body">
-                        <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
-                        <strong>Status:</strong> <span class="status-rejected">@oncallRequest.LeaveStatus.LeaveStatusName</span><br />
-                    </div>
+                <div class="request-card">
+                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
+                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
+                    <strong>Status:</strong> <span class="status-rejected">@oncallRequest.LeaveStatus.LeaveStatusName</span><br />
                 </div>
             }
         </div>
     </div>
-
 </div>
