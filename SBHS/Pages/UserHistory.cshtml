@@ -47,10 +47,10 @@
         background-color: #ffcdd2; /* Light red for rejected requests */
     }
 
-    .card-content{
-        padding:10px;
+    .card-content {
+        padding: 20px;   
     }
-    
+
     .header {
         display: flex;
         align-items: center;
@@ -68,21 +68,49 @@
         margin-right: 10px; /* Add margin to separate the button from h2 */
     }
 
+    .tabs {
+        display: flex;
+        justify-content: center; /* Center the tabs horizontally */
+        margin-bottom: 20px; /* Add margin at the bottom for spacing */
+    }
+
+    .tablink {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+    }
+
+        .tablink:hover {
+            background-color: #ddd;
+        }
+
+    .active {
+        background-color: #ccc;
+    }
 
 </style>
 
 <div class="header">
     <a class="back-button" href="/User"><i class="fa-solid fa-arrow-left"></i></a>
-    <h2>Leave Request History</h2>
+    <h2>Request History</h2>
 </div>
 <hr />
 
-<div class="card-content">
+<div class="tabs">
+    <button class="tablink" onclick="openTab(event, 'leaveRequests')" id="defaultOpen">Leave Requests</button>
+    <button class="tablink" onclick="openTab(event, 'oncallRequests')">Oncall Requests</button>
+</div>
+
+<div id="leaveRequests" class="card-content">
 
     @if (Model.LeaveRequests.Any())
     {
         <h3>Leave Requests</h3>
-        <div class="card-container">
+        <div class="card-container" id="leaveRequestContainer">
             @foreach (var leaveRequest in Model.LeaveRequests)
             {
                 <div class="card">
@@ -98,26 +126,11 @@
         </div>
     }
 
-    @if (Model.OncallRequests.Any())
+    @if (Model.ApprovedLeaveRequests.Any())
     {
-        <h3>Oncall Requests</h3>
-        <div class="card-container">
-            @foreach (var oncallRequest in Model.OncallRequests)
-            {
-                <div class="card">
-                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
-                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
-                    <strong>Status:</strong> @oncallRequest.LeaveStatus.LeaveStatusName<br />
-                </div>
-            }
-        </div>
-    }
-
-    @if (Model.AdminApprovedRequests.Any())
-    {
-        <h3>Approved Requests</h3>
-        <div class="card-container">
-            @foreach (var leaveRequest in Model.AdminApprovedRequests)
+        <h3>Approved Leave Requests</h3>
+        <div class="card-container" id="leaveRequestContainer">
+            @foreach (var leaveRequest in Model.ApprovedLeaveRequests)
             {
                 <div class="card approved">
                     <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
@@ -131,11 +144,11 @@
         </div>
     }
 
-    @if (Model.AdminRejectedRequests.Any())
+    @if (Model.RejectedLeaveRequests.Any())
     {
-        <h3>Rejected Requests</h3>
-        <div class="card-container">
-            @foreach (var leaveRequest in Model.AdminRejectedRequests)
+        <h3>Rejected Leave Requests</h3>
+        <div class="card-container" id="leaveRequestContainer">
+            @foreach (var leaveRequest in Model.RejectedLeaveRequests)
             {
                 <div class="card rejected">
                     <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
@@ -149,9 +162,97 @@
         </div>
     }
 
-    @if (!Model.LeaveRequests.Any() && !Model.AdminApprovedRequests.Any() && !Model.AdminRejectedRequests.Any())
+</div>
+
+
+<div id="oncallRequests" class="card-content">
+    @if (Model.OncallRequests.Any())
     {
-        <p>No leave requests found.</p>
+        <h3>Oncall Requests</h3>
+        <div class="card-container" id="oncallRequestContainer">
+            @foreach (var oncallRequest in Model.OncallRequests)
+            {
+                <div class="card">
+                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
+                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
+                    <strong>Status:</strong> @oncallRequest.LeaveStatus.LeaveStatusName<br />
+                </div>
+            }
+        </div>
+    }
+
+    @if (Model.ApprovedOncallRequests.Any())
+    {
+        <h3>Approved Oncall Requests</h3>
+        <div class="card-container" id="oncallRequestContainer">
+            @foreach (var oncallRequest in Model.ApprovedOncallRequests)
+            {
+                <div class="card approved">
+                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
+                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
+                    <strong>Status:</strong> <span class="status-approved">@oncallRequest.LeaveStatus.LeaveStatusName</span><br />
+                </div>
+            }
+        </div>
+    }
+
+    @if (Model.RejectedOncallRequests.Any())
+    {
+        <h3>Rejected Oncall Requests</h3>
+        <div class="card-container" id="oncallRequestContainer">
+            @foreach (var oncallRequest in Model.RejectedOncallRequests)
+            {
+                <div class="card rejected">
+                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
+                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
+                    <strong>Status:</strong> <span class="status-approved">@oncallRequest.LeaveStatus.LeaveStatusName</span><br />
+                </div>
+            }
+        </div>
     }
 
 </div>
+
+
+<script>
+    // Function to open a specific tab
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+
+        // Hide all tab contents
+        tabcontent = document.getElementsByClassName("card-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Remove 'active' class from all tab links
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+
+        // Show the specific tab content
+        document.getElementById(tabName).style.display = "block";
+
+        // Add 'active' class to the clicked tab link
+        evt.currentTarget.classList.add("active");
+    }
+
+    // Function to set the default active tab
+    function setDefaultTab() {
+        // Get the default tab name from the URL or set a default value
+        var defaultTab = window.location.hash.substr(1) || 'leaveRequests';
+
+        // Find and click the tab link with the default tab name
+        var tabLink = document.querySelector('.tablink[data-tab="' + defaultTab + '"]');
+        if (tabLink) {
+            tabLink.click();
+        } else {
+            // If the default tab is not found, click the first tab
+            document.querySelector('.tablink').click();
+        }
+    }
+
+    // Call the setDefaultTab function when the page loads
+    window.onload = setDefaultTab;
+</script>
