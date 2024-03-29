@@ -27,14 +27,16 @@ namespace SBHS.Pages
                 .Include(l => l.LeaveStatus)
                 .Include(l => l.LeaveType)
                 .Include(l => l.UserDetail)
-                .Where(l => l.LeaveStatusId == 1) // Assuming 1 is the ID for approved status
+                .Where(l => l.LeaveStatusId == 1)
+                .OrderByDescending(l => l.DateApproved)
                 .ToListAsync();
 
             RejectedLeaveRequests = await _context.LeaveRequests
                 .Include(l => l.LeaveStatus)
                 .Include(l => l.LeaveType)
                 .Include(l => l.UserDetail)
-                .Where(l => l.LeaveStatusId == 3) // Assuming 3 is the ID for rejected status
+                .Where(l => l.LeaveStatusId == 3)
+                .OrderByDescending(l => l.DateRejected)
                 .ToListAsync();
 
 
@@ -43,13 +45,15 @@ namespace SBHS.Pages
             ApprovedOncallRequests = await _context.OncallRequests
                 .Include(l => l.LeaveStatus)
                 .Include(l => l.UserDetail)
-                .Where(l => l.LeaveStatusId == 1) // Assuming 1 is the ID for approved status
+                .Where(l => l.LeaveStatusId == 1)
+                .OrderByDescending(l => l.DateApproved)
                 .ToListAsync();
 
             RejectedOncallRequests = await _context.OncallRequests
                 .Include(l => l.LeaveStatus)
                 .Include(l => l.UserDetail)
-                .Where(l => l.LeaveStatusId == 3) // Assuming 3 is the ID for rejected status
+                .Where(l => l.LeaveStatusId == 3)
+                .OrderByDescending(l => l.DateRejected)
                 .ToListAsync();
         }
     }

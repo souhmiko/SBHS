@@ -2,16 +2,72 @@
 @model SBHS.Pages.LeaveTypePage.LeaveTypeIndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Leave Types";
 }
 
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<!-- Plugins css -->
+<link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<!-- Theme Config Js -->
+<script src="~/assets/js/head.js"></script>
+
+<!-- Bootstrap css -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+<!-- App css -->
+<link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Icons css -->
+<link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
 
 <style>
+    .table, td, th {
+        border: 1px solid #000000;
+    }
+
+    .table {
+        background-color: #fff;
+        padding: 20px;
+        border-collapse: collapse;
+        position: center;
+    }
+
+    td {
+        border-collapse: collapse;
+        padding: 0.65em 1em;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    .title {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .create-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .create-button:hover {
+            color: #f3f3f3;
+        }
+
+    .custom-btn {
+        width: 50px;
+    }
 
 </style>
 

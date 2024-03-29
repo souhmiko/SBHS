@@ -96,3 +96,32 @@ th {
     text-align: center;
     margin-top: 30px;
 }
+
+.allbody {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.row-content {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 16px;
+}
+
+.control-label {
+    font-weight: bold;
+}
+
+.justify-btn {
+    float: right;
+}

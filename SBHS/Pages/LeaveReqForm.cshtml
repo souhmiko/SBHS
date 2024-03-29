@@ -4,6 +4,8 @@
     Layout = null;
 }
 
+@inject SBHS.Services.LeaveRequestsService LeaveRequestsService
+
 
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -80,6 +82,14 @@
             <h2 class="display-1 h1">Leave Request Form</h2>
         </section>
     </header>
+
+
+    @if (ViewData["QuotaFullMessage"] != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            @ViewData["QuotaFullMessage"]
+        </div>
+    }
 
     <!--form-->
 

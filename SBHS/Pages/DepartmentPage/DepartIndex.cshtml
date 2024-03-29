@@ -10,46 +10,117 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<!-- Plugins css -->
+<link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<!-- Theme Config Js -->
+<script src="~/assets/js/head.js"></script>
+
+<!-- Bootstrap css -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+<!-- App css -->
+<link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Icons css -->
+<link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
 
 <style>
-    
+    .table, td, th {
+        border: 1px solid #000000;
+    }
+
+    .table {
+        background-color: #fff;
+        padding: 20px;
+        border-collapse: collapse;
+        position: center;
+    }
+
+    td {
+        border-collapse: collapse;
+        padding: 0.65em 1em;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    .title {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .create-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .create-button:hover {
+            color: #f3f3f3;
+        }
+
+    .custom-btn {
+        width: 50px;
+    }
+
 </style>
 
 
 <h2 class="title">Department</h2>
 <hr/>
-<p>
-    <a asp-page="DepartCreate" class="create-button"><i class="fa fa-plus icon-button" aria-hidden="true"></i>New Department</a>
-</p>
-<table class="table" id="department">
-    <thead>
-        <tr>
-            <th>
-                Departments
-            </th>
-            <th>
-                Action
-            </th>
 
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Departments) {
-        <tr>
-            <td width="50%">
-                @Html.DisplayFor(modelItem => item.DepartmentName)
-            </td>
-            <td width="15%">
-                <a asp-page="./DepartEdit" asp-route-id="@item.Id" class="btn btn-primary custom-btn">
-                    <i class="fa-regular fa-pen-to-square"></i>
-                </a>
+<div class="content">
+    <div class="container-fluid">
+        <p>
+            <a asp-page="DepartCreate" class="create-button"><i class="fa fa-plus icon-button" aria-hidden="true"></i>New Department</a>
+        </p>
+        <table class="table" id="department">
+            <thead>
+                <tr>
+                    <th>
+                        Departments
+                    </th>
+                    <th>
+                        Action
+                    </th>
 
-                <a asp-page="./DepartDelete" asp-route-id="@item.Id" class="btn btn-danger custom-btn">
-                    <i class="fas fa-trash"></i>
-                </a>    
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model.Departments) {
+                <tr>
+                    <td width="50%">
+                        @Html.DisplayFor(modelItem => item.DepartmentName)
+                    </td>
+                    <td width="15%">
+                        <a asp-page="./DepartEdit" asp-route-id="@item.Id" class="btn btn-primary custom-btn">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </a>
+
+                        <a asp-page="./DepartDelete" asp-route-id="@item.Id" class="btn btn-danger custom-btn">
+                            <i class="fas fa-trash"></i>
+                        </a>    
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<!-- Vendor js -->
+<script src="~/assets/js/vendor.min.js"></script>
+<!-- Bootstrap Tables js -->
+<script src="~/assets/libs/bootstrap-table/bootstrap-table.min.js"></script>
+
+<!-- Init js -->
+<script src="~/assets/js/pages/bootstrap-tables.init.js"></script>

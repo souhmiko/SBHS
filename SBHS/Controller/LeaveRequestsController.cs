@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SBHS.Models;
+using SBHS.Services;
 
 namespace SBHS.Controller
 {
@@ -66,8 +67,20 @@ namespace SBHS.Controller
         // POST: api/LeaveRequests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LeaveRequests>> PostLeaveRequests([FromForm] LeaveRequests leaveRequests)
+        public async Task<ActionResult<LeaveRequests>> PostLeaveRequests([FromForm] LeaveRequests leaveRequests, IFormFile file)
         {
+            // Check if a file is uploaded
+            if (file != null && file.Length > 0)
+            {
+                // Read the file content into a byte array
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+                    leaveRequests.UploadDocument = memoryStream.ToArray();
+                }
+            }
+
+
 
             // Retrieve the UserDetailId based on the logged-in user's ID
 
@@ -82,7 +95,7 @@ namespace SBHS.Controller
 
             leaveRequests.UserDetailId = userDetails.Id;
 
-           
+
             // Set the leave status to "Pending" (assuming "Pending" has an Id of 2)
 
             leaveRequests.LeaveStatusId = 2; // Assuming "Pending" has an Id of 2

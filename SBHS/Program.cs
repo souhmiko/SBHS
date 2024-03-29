@@ -13,7 +13,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<SBHSDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("SBHSDb")));
 
-
+builder.Services.AddScoped<LeaveRequestsService>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => 
 { 

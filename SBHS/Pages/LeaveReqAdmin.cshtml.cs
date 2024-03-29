@@ -8,9 +8,9 @@ namespace SBHS.Pages
 {
     public class LeaveReqAdminModel : PageModel
     {
-        private readonly SBHS.Models.SBHSDbContext _context;
+        private readonly SBHSDbContext _context;
 
-        public LeaveReqAdminModel(SBHS.Models.SBHSDbContext context)
+        public LeaveReqAdminModel(SBHSDbContext context)
         {
             _context = context;
             
@@ -39,6 +39,7 @@ namespace SBHS.Pages
                 return NotFound();
             }
 
+
             if (action == "Approve")
             {
                 leaveRequest.LeaveStatusId = 1; // Assuming 1 is the ID for approved status
@@ -62,5 +63,6 @@ namespace SBHS.Pages
         }
 
         
+
     }
 }

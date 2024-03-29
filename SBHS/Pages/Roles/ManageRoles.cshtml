@@ -1,8 +1,122 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity
 @model SBHS.Pages.Roles.ManageRolesModel
 @{
     ViewData["Title"] = "Manage Roles";
 }
 
-<h2>Manage Roles</h2>
+@inject UserManager<IdentityUser> UserManager
 
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Plugins css -->
+<link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<!-- Theme Config Js -->
+<script src="~/assets/js/head.js"></script>
+
+<!-- Bootstrap css -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+<!-- App css -->
+<link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Icons css -->
+<link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+
+<style>
+    .custom-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .custom-table th, .custom-table td {
+        border: 1px solid #333;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .custom-table th {
+        background-color: #343a40;
+        color: #333;
+    }
+
+    .custom-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .custom-table tr:hover {
+        background-color: #ddd;
+    }
+
+    .custom-select {
+        width: 100%;
+    }
+
+    .title {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+</style>
+
+<div class="content">
+
+    <h2 class="title">Manage Roles</h2>
+    <hr/>
+
+    @if (Model.Users != null && Model.Users.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped custom-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Employees</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Current Roles</th>
+                    <th scope="col">Change Roles</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td></td>
+                        <td>@user.Email</td>
+                        <td>@(string.Join(", ", await UserManager.GetRolesAsync(user)))</td>
+                        <td>
+                            <form id="roleForm_@user.Id" method="post">
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <select name="roles" multiple class="form-control custom-select">
+                                    @foreach (var role in Model.Roles)
+                                    {
+                                        <option value="@role.Name">@role.Name</option>
+                                    }
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="saveRoles('@user.Id')">Save</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+</div>
+
+<script>
+    function saveRoles(userId) {
+        var form = document.getElementById('roleForm_' + userId);
+        form.submit();
+    }
+
+</script>
