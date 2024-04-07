@@ -9,13 +9,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<!-- Plugins css -->
+<link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<!-- Theme Config Js -->
+<script src="~/assets/js/head.js"></script>
+
+<!-- Bootstrap css -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+<!-- App css -->
+<link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Icons css -->
+<link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
 <style>
-
-    p{
-        font-size:20px;
-        text-align:center;
-    }
 
     .status-approved {
         background-color: green;
@@ -45,79 +55,109 @@
 <h2 class="title">Oncall Request</h2>
 <hr/>
 
+
+
 @if (Model.OncallRequests.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Employees
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OncallRequests[0].UserDetail.DepartmentId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OncallRequests[0].DateTimeOnCall)
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Action
-                </th>
+    <div class="content">
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.OncallRequests)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserDetail.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserDetail.Department.DepartmentName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateTimeOnCall)
-                    </td>
-                    <td>
-                        @{
-                            string statusColorClass = "";
-                            switch (item.LeaveStatus.LeaveStatusName)
-                            {
-                                case "Approved":
-                                    statusColorClass = "status-approved";
-                                    break;
-                                case "Pending":
-                                    statusColorClass = "status-pending";
-                                    break;
-                                case "Rejected":
-                                    statusColorClass = "status-rejected";
-                                    break;
-                                default:
-                                    statusColorClass = "";
-                                    break;
-                            }
-                        }
-                        <span class="@statusColorClass">@Html.DisplayFor(modelItem => item.LeaveStatus.LeaveStatusName)</span>
-                    </td>
+        <!-- Start Content-->
+        <div class="container-fluid">
 
-                    <td>
-                        <form method="post">
-                            <input type="hidden" name="RequestId" value="@item.Id" />
-                            <button type="submit" name="Action" value="Approve" class="btn btn-success">
-                                <i class="fa-solid fa-check"></i>
-                            </button>
-                            <button type="submit" name="Action" value="Reject" class="btn btn-danger" style="margin:0px;">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap table-striped" id="products-datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Employees
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OncallRequests[0].UserDetail.DepartmentId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.OncallRequests[0].DateTimeOnCall)
+                                            </th>
+                                            <th>
+                                                Status
+                                            </th>
+                                            <th>
+                                                Action
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.OncallRequests)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.UserDetail.FullName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.UserDetail.Department.DepartmentName)
+                                                </td>
+                                                <td>
+                                                    @if (item.DateTimeOnCall.HasValue)
+                                                    {
+                                                        @item.DateTimeOnCall.Value.Date.ToString("MM/dd/yyyy")
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.DateTimeOnCall)
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        string statusColorClass = "";
+                                                        switch (item.LeaveStatus.LeaveStatusName)
+                                                        {
+                                                            case "Approved":
+                                                                statusColorClass = "status-approved";
+                                                                break;
+                                                            case "Pending":
+                                                                statusColorClass = "status-pending";
+                                                                break;
+                                                            case "Rejected":
+                                                                statusColorClass = "status-rejected";
+                                                                break;
+                                                            default:
+                                                                statusColorClass = "";
+                                                                break;
+                                                        }
+                                                    }
+                                                    <span class="@statusColorClass">@Html.DisplayFor(modelItem => item.LeaveStatus.LeaveStatusName)</span>
+                                                </td>
+
+                                                <td>
+                                                    <form method="post">
+                                                        <input type="hidden" name="RequestId" value="@item.Id" />
+                                                        <button type="submit" name="Action" value="Approve" class="btn btn-success">
+                                                            <i class="fa-solid fa-check"></i>
+                                                        </button>
+                                                        <button type="submit" name="Action" value="Reject" class="btn btn-danger" style="margin:0px;">
+                                                            <i class="fa-solid fa-xmark"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div> <!-- container -->
+    </div><!-- content -->
 }
 else
 {

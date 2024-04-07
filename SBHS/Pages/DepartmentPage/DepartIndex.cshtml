@@ -27,100 +27,64 @@
 <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
 
-<style>
-    .table, td, th {
-        border: 1px solid #000000;
-    }
-
-    .table {
-        background-color: #fff;
-        padding: 20px;
-        border-collapse: collapse;
-        position: center;
-    }
-
-    td {
-        border-collapse: collapse;
-        padding: 0.65em 1em;
-    }
-
-    th {
-        text-align: center;
-    }
-
-    .title {
-        text-align: center;
-        margin-top: 30px;
-    }
-
-    .create-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-    }
-
-        .create-button:hover {
-            color: #f3f3f3;
-        }
-
-    .custom-btn {
-        width: 50px;
-    }
-
-</style>
-
 
 <h2 class="title">Department</h2>
 <hr/>
 
 <div class="content">
+
+    <!-- Start Content-->
     <div class="container-fluid">
-        <p>
-            <a asp-page="DepartCreate" class="create-button"><i class="fa fa-plus icon-button" aria-hidden="true"></i>New Department</a>
-        </p>
-        <table class="table" id="department">
-            <thead>
-                <tr>
-                    <th>
-                        Departments
-                    </th>
-                    <th>
-                        Action
-                    </th>
 
-                </tr>
-            </thead>
-            <tbody>
-        @foreach (var item in Model.Departments) {
-                <tr>
-                    <td width="50%">
-                        @Html.DisplayFor(modelItem => item.DepartmentName)
-                    </td>
-                    <td width="15%">
-                        <a asp-page="./DepartEdit" asp-route-id="@item.Id" class="btn btn-primary custom-btn">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </a>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-4">
+                                <a asp-page="DepartCreate" type="button" class="btn btn-danger waves-effect waves-light"><i class="mdi mdi-plus-circle me-1"></i> Add Departments</a>
+                            </div>
+                        </div>
 
-                        <a asp-page="./DepartDelete" asp-route-id="@item.Id" class="btn btn-danger custom-btn">
-                            <i class="fas fa-trash"></i>
-                        </a>    
-                    </td>
-                </tr>
-        }
-            </tbody>
-        </table>
-    </div>
-</div>
+                        <div class="table-responsive">
+                            <table class="table table-centered table-nowrap table-striped" id="products-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Departments
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Departments)
+                                    {
+                                        <tr>
+                                            <td width="50%">
+                                                @Html.DisplayFor(modelItem => item.DepartmentName)
+                                            </td>
+                                            <td width="15%">
+                                                <a asp-page="./DepartEdit" asp-route-id="@item.Id" class="btn btn-primary custom-btn">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                </a>
 
+                                                <a asp-page="./DepartDelete" asp-route-id="@item.Id" class="btn btn-danger custom-btn">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
 
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
 
-<!-- Vendor js -->
-<script src="~/assets/js/vendor.min.js"></script>
-<!-- Bootstrap Tables js -->
-<script src="~/assets/libs/bootstrap-table/bootstrap-table.min.js"></script>
-
-<!-- Init js -->
-<script src="~/assets/js/pages/bootstrap-tables.init.js"></script>
+    </div> <!-- container -->
+</div><!-- content -->

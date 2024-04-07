@@ -72,25 +72,6 @@ body {
 }
 
 
-.table, td, th {
-    border: 1px solid #000000;
-}
-
-.table {
-    background-color: #fff;
-    padding: 20px;
-    border-collapse: collapse;
-    position: center;
-}
-
-td {
-    border-collapse: collapse;
-    padding: 0.65em 1em;
-}
-
-th {
-    text-align: center;
-}
 
 .title {
     text-align: center;

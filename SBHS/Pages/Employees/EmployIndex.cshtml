@@ -26,98 +26,75 @@
 <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
 
-<style>
-
-    .table, td, th {
-        border: 1px solid #000000;
-    }
-
-    .table {
-        background-color: #fff;
-        padding: 20px;
-        border-collapse: collapse;
-        position: center;
-    }
-
-    td {
-        border-collapse: collapse;
-        padding: 0.65em 1em;
-    }
-
-    th {
-        text-align: center;
-    }
-
-    .title {
-        text-align: center;
-        margin-top: 30px;
-    }
-
-    .create-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-    }
-
-    .custom-btn {
-        width: 50px;
-    }
-
-</style>
-
-
 <h2 class="title">Employees</h2>
 <hr/>
-<p>
-    <a asp-page="EmployCreate" class="create-button"><i class="fa fa-plus icon-button" aria-hidden="true"></i>New Employee</a>
 
-    <!-- Enhanced Export to PDF Button -->
-    @* <form method="post" asp-page-handler="ExportToPdf" class="d-inline">
-    <button type="submit" class="btn btn-info ml-2">Export to PDF <i class="fas fa-file-pdf"></i></button>
-    </form> *@
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserDetails[0].AspNetUserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserDetails[0].Department)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserDetails[0].WorkTitle)
-            </th>
-            <th>
-                Action
-            </th>
+<div class="content">
 
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.UserDetails) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Department.DepartmentName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WorkTitle.WorkTitleName)
-            </td>
-            <td width="20%">
-                <a asp-page="./EmployEdit" asp-route-id="@item.Id" class="btn btn-primary custom-btn">
-                    <i class="fa-regular fa-pen-to-square"></i>
-                </a>
-                <a asp-page="./EmployDelete" asp-route-id="@item.Id" class="btn btn-danger custom-btn">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- Start Content-->
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-4">
+                                <a asp-page="EmployCreate" type="button" class="btn btn-danger waves-effect waves-light"><i class="mdi mdi-plus-circle me-1"></i> Add Employees</a>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-centered table-nowrap table-striped" id="products-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.UserDetails[0].AspNetUserId)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.UserDetails[0].Department)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.UserDetails[0].WorkTitle)
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.UserDetails)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.FullName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.WorkTitle.WorkTitleName)
+                                            </td>
+                                            <td width="20%">
+                                                <a asp-page="./EmployEdit" asp-route-id="@item.Id" class="btn btn-primary custom-btn">
+                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                </a>
+                                                <a asp-page="./EmployDelete" asp-route-id="@item.Id" class="btn btn-danger custom-btn">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div> <!-- end col -->
+        </div>
+        <!-- end row -->
+
+    </div> <!-- container -->
+</div><!-- content -->

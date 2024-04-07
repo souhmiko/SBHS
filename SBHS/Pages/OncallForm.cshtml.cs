@@ -46,6 +46,15 @@ namespace SBHS.Pages
 
         public async Task<IActionResult> OnPost()
         {
+            // Check if the quota for the requested date is full
+            if (IsQuotaFull(OncallRequest.DateTimeOnCall))
+            {
+                // Set a message indicating that the quota is full
+                ViewData["QuotaFullMessage"] = "Quota for this date is full. Please choose another date.";
+                return Page(); // Return the page with the message
+            }
+
+
             if (ModelState.IsValid)
             {
                 return Page();
@@ -84,6 +93,24 @@ namespace SBHS.Pages
         {
             // Assuming "Pending" leave status has ID 1 in the LeaveStatus table
             return 2; // Update this to query the database for the ID dynamically if needed
+        }
+
+        private bool IsQuotaFull(DateTime? date)
+        {
+            if (date.HasValue)
+            {
+                // Count the number of leave requests for the given date
+                var oncallRequestsCount = _context.OncallRequests
+                    .Count(lr => lr.DateTimeOnCall.HasValue && lr.DateTimeOnCall.Value.Date == date.Value.Date);
+
+                // Assuming the quota is 3, check if the count exceeds the quota
+                return oncallRequestsCount >= 1;
+            }
+            else
+            {
+                // Handle the case where date is null (optional)
+                return false; // or throw an exception, depending on your requirements
+            }
         }
     }
 }

@@ -29,6 +29,9 @@ namespace SBHS.Pages.Roles
             Users = await _userManager.Users.ToListAsync();
             Roles = await _roleManager.Roles.ToListAsync();
 
+            // Retrieve user details
+            UserDetails = await _dbContext.UserDetails.ToListAsync();
+
             return Page();
         }
 
