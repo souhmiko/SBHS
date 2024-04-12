@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace SBHS.Models;
 
-public partial class LeaveConditions
+public partial class OncallConditions
 {
     public int Id { get; set; }
 
-    public string LeaveConditionName { get; set; }
+    public string OncallConditionsName { get; set; }
 
     public int WorkTitleId { get; set; }
 

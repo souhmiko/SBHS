@@ -9,11 +9,13 @@ namespace SBHS.Models;
 public partial class WorkTitles
 {
     public int Id { get; set; }
-    
+
     [Display(Name = "Work Title")]
     public string WorkTitleName { get; set; }
 
     public virtual ICollection<LeaveConditions> LeaveConditions { get; set; } = new List<LeaveConditions>();
+
+    public virtual ICollection<OncallConditions> OncallConditions { get; set; } = new List<OncallConditions>();
 
     public virtual ICollection<UserDetails> UserDetails { get; set; } = new List<UserDetails>();
 }

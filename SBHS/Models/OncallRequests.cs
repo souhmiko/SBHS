@@ -9,28 +9,28 @@ namespace SBHS.Models;
 public partial class OncallRequests
 {
     public int Id { get; set; }
-    
+
     [Display(Name = "Employees")]
     public int UserDetailId { get; set; }
-    
+
     [Display(Name = "Department")]
     public int DepartmentId { get; set; }
-    
+
     [Display(Name = "Date")]
     public DateTime? DateTimeOnCall { get; set; }
-    
+
     [Display(Name = "Approved By")]
     public string ApprovedByUserDetailId { get; set; }
-    
+
     [Display(Name = "Date Approved")]
     public DateTime? DateApproved { get; set; }
-    
+
     [Display(Name = "Rejected By")]
     public string RejectedByUserDetailId { get; set; }
-    
+
     [Display(Name = "Date Rejected")]
     public DateTime? DateRejected { get; set; }
-    
+
     [Display(Name = "Status")]
     public int LeaveStatusId { get; set; }
 

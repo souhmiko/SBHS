@@ -41,7 +41,7 @@ namespace SBHS.Pages
             if (userDetails != null)
             {
                 ViewData["FullName"] = userDetails.FullName;
-                
+
                 // Assign UserDetailId
                 LeaveRequest.UserDetailId = userDetails.Id;
             }
@@ -52,12 +52,12 @@ namespace SBHS.Pages
         public async Task<IActionResult> OnPost()
         {
             // Check if the quota for the requested date is full
-            if (IsQuotaFull(LeaveRequest.StartDate))
-            {
-                // Set a message indicating that the quota is full
-                ViewData["QuotaFullMessage"] = "Quota for this date is full. Please choose another date.";
-                return Page(); // Return the page with the message
-            }
+            //if (IsQuotaFull(LeaveRequest.StartDate))
+            //{
+            //    // Set a message indicating that the quota is full
+            //    ViewData["QuotaFullMessage"] = "Quota for this date is full. Please choose another date.";
+            //    return Page(); // Return the page with the message
+            //}
 
             if (!ModelState.IsValid)
             {
@@ -80,13 +80,35 @@ namespace SBHS.Pages
 
             // Fetch user details including full name
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userDetails = await _context.UserDetails.FirstOrDefaultAsync(u => u.AspNetUserId == userId);
+            var userDetails = await _context.UserDetails
+                .Include(u => u.WorkTitle)
+                .FirstOrDefaultAsync(u => u.AspNetUserId == userId);
 
             if (userDetails != null)
             {
                 // Assign UserDetailId
                 LeaveRequest.UserDetailId = userDetails.Id;
             }
+
+
+            // Fetch the leave conditions for the user's work title
+            var leaveCondition = await _context.LeaveConditions
+                .FirstOrDefaultAsync(lc => userDetails != null && lc.WorkTitleId == userDetails.WorkTitleId);
+
+            if (leaveCondition == null)
+            {
+                // Handle the case where leave conditions are not found for the user's work title
+                return NotFound();
+            }
+
+            // Check if the quota for the requested date is full
+            if (IsQuotaFull(LeaveRequest.StartDate, leaveCondition.MaxAmountofStaffAllowed))
+            {
+                // Set a message indicating that the quota is full
+                ViewData["QuotaFullMessage"] = "Quota for this date is full. Please choose another date.";
+                return Page(); // Return the page with the message
+            }
+
 
 
             // Save the leave request to the database
@@ -103,7 +125,25 @@ namespace SBHS.Pages
             return 2; // Update this to query the database for the ID dynamically if needed
         }
 
-        private bool IsQuotaFull(DateTime? date)
+        //private bool IsQuotaFull(DateTime? date)
+        //{
+        //    if (date.HasValue)
+        //    {
+        //        // Count the number of leave requests for the given date
+        //        var leaveRequestsCount = _context.LeaveRequests
+        //            .Count(lr => lr.StartDate.HasValue && lr.StartDate.Value.Date == date.Value.Date);
+
+        //        // Assuming the quota is 3, check if the count exceeds the quota
+        //        return leaveRequestsCount >= 1;
+        //    }
+        //    else
+        //    {
+        //        // Handle the case where date is null (optional)
+        //        return false; // or throw an exception, depending on your requirements
+        //    }
+        //}
+
+        private bool IsQuotaFull(DateTime? date, int? maxAllowed)
         {
             if (date.HasValue)
             {
@@ -111,8 +151,8 @@ namespace SBHS.Pages
                 var leaveRequestsCount = _context.LeaveRequests
                     .Count(lr => lr.StartDate.HasValue && lr.StartDate.Value.Date == date.Value.Date);
 
-                // Assuming the quota is 3, check if the count exceeds the quota
-                return leaveRequestsCount >= 1;
+                // Check if the count exceeds the maximum allowed
+                return leaveRequestsCount >= maxAllowed;
             }
             else
             {
@@ -120,6 +160,5 @@ namespace SBHS.Pages
                 return false; // or throw an exception, depending on your requirements
             }
         }
-
     }
 }

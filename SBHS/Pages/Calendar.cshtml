@@ -12,6 +12,7 @@
         font-family:Arial;
         color:#333;
     }
+
 </style>
 
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
@@ -38,7 +39,7 @@
                         start: '@leaveRequest.StartDate?.ToString("yyyy-MM-dd")', // Adjust date formatting as needed
                         end: '@leaveRequest.EndDate?.ToString("yyyy-MM-dd")', // Adjust date formatting as needed
                         color: 'orange',
-                        description: '@leaveRequest.UserDetail.FullName' + ' - ' + '@leaveRequest.LeaveType.LeaveTypeName'
+                        description: '@leaveRequest.UserDetail.FullName - Department: @(leaveRequest.UserDetail.Department.DepartmentName), Work Title: @(leaveRequest.UserDetail.WorkTitle.WorkTitleName)'
                     }, </text>
                 }
 
@@ -48,7 +49,7 @@
                         title: '@onCallRequest.UserDetail.FullName' + ' (On-call)',
                         start: '@onCallRequest.DateTimeOnCall?.ToString("yyyy-MM-dd")',
                         color: 'green',
-                        description: '@onCallRequest.UserDetail.FullName' + ' (On-call)'
+                        description: '@onCallRequest.UserDetail.FullName - Department: @(onCallRequest.UserDetail.Department.DepartmentName), Work Title: @(onCallRequest.UserDetail.WorkTitle.WorkTitleName)'
                     }, </text>
                 }
 

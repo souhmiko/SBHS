@@ -36,6 +36,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[OncallConditions]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[OncallRequests]",
          "ObjectType": 0
       },

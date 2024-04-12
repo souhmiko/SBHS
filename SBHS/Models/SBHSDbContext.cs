@@ -25,6 +25,8 @@ public partial class SBHSDbContext : IdentityDbContext
 
     public virtual DbSet<LeaveTypes> LeaveTypes { get; set; }
 
+    public virtual DbSet<OncallConditions> OncallConditions { get; set; }
+
     public virtual DbSet<OncallRequests> OncallRequests { get; set; }
 
     public virtual DbSet<ShiftDetails> ShiftDetails { get; set; }
@@ -46,11 +48,8 @@ public partial class SBHSDbContext : IdentityDbContext
 
         modelBuilder.Entity<LeaveConditions>(entity =>
         {
-            entity.Property(e => e.MaxAmountofStaffAllowed).HasMaxLength(450);
-
             entity.HasOne(d => d.WorkTitle).WithMany(p => p.LeaveConditions)
                 .HasForeignKey(d => d.WorkTitleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_LeaveConditions_WorkTitles");
         });
 
@@ -78,6 +77,13 @@ public partial class SBHSDbContext : IdentityDbContext
                 .HasForeignKey(d => d.UserDetailId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_LeaveRequests_UserDetails");
+        });
+
+        modelBuilder.Entity<OncallConditions>(entity =>
+        {
+            entity.HasOne(d => d.WorkTitle).WithMany(p => p.OncallConditions)
+                .HasForeignKey(d => d.WorkTitleId)
+                .HasConstraintName("FK_OncallConditions_WorkTitles");
         });
 
         modelBuilder.Entity<OncallRequests>(entity =>

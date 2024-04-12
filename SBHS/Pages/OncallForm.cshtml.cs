@@ -47,12 +47,12 @@ namespace SBHS.Pages
         public async Task<IActionResult> OnPost()
         {
             // Check if the quota for the requested date is full
-            if (IsQuotaFull(OncallRequest.DateTimeOnCall))
-            {
-                // Set a message indicating that the quota is full
-                ViewData["QuotaFullMessage"] = "Quota for this date is full. Please choose another date.";
-                return Page(); // Return the page with the message
-            }
+            //if (IsQuotaFull(OncallRequest.DateTimeOnCall))
+            //{
+            //    // Set a message indicating that the quota is full
+            //    ViewData["QuotaFullMessage"] = "Quota for this date is full. Please choose another date.";
+            //    return Page(); // Return the page with the message
+            //}
 
 
             if (ModelState.IsValid)
@@ -78,8 +78,26 @@ namespace SBHS.Pages
 
             }
 
-            
-            
+
+            // Fetch the oncall conditions for the user's work title
+            var oncallCondition = await _context.OncallConditions
+                .FirstOrDefaultAsync(lc => userDetails != null && lc.WorkTitleId == userDetails.WorkTitleId);
+
+            if (oncallCondition == null)
+            {
+                // Handle the case where leave conditions are not found for the user's work title
+                return NotFound();
+            }
+
+            // Check if the quota for the requested date is full
+            if (IsQuotaFull(OncallRequest.DateTimeOnCall, oncallCondition.MaxAmountofStaffAllowed))
+            {
+                // Set a message indicating that the quota is full
+                ViewData["QuotaFullMessage"] = "Quota for this date is full. Please choose another date.";
+                return Page(); // Return the page with the message
+            }
+
+
 
             // Save the on-call request to the database
             _context.OncallRequests.Add(OncallRequest);
@@ -95,7 +113,25 @@ namespace SBHS.Pages
             return 2; // Update this to query the database for the ID dynamically if needed
         }
 
-        private bool IsQuotaFull(DateTime? date)
+        //private bool IsQuotaFull(DateTime? date)
+        //{
+        //    if (date.HasValue)
+        //    {
+        //        // Count the number of leave requests for the given date
+        //        var oncallRequestsCount = _context.OncallRequests
+        //            .Count(lr => lr.DateTimeOnCall.HasValue && lr.DateTimeOnCall.Value.Date == date.Value.Date);
+
+        //        // Assuming the quota is 3, check if the count exceeds the quota
+        //        return oncallRequestsCount >= 1;
+        //    }
+        //    else
+        //    {
+        //        // Handle the case where date is null (optional)
+        //        return false; // or throw an exception, depending on your requirements
+        //    }
+        //}
+
+        private bool IsQuotaFull(DateTime? date, int? maxAllowed)
         {
             if (date.HasValue)
             {
@@ -103,8 +139,8 @@ namespace SBHS.Pages
                 var oncallRequestsCount = _context.OncallRequests
                     .Count(lr => lr.DateTimeOnCall.HasValue && lr.DateTimeOnCall.Value.Date == date.Value.Date);
 
-                // Assuming the quota is 3, check if the count exceeds the quota
-                return oncallRequestsCount >= 1;
+                // Check if the count exceeds the maximum allowed
+                return oncallRequestsCount >= maxAllowed;
             }
             else
             {
