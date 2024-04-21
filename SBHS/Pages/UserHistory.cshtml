@@ -4,8 +4,26 @@
     Layout = null;
 }
 
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Plugins css -->
+<link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<!-- Theme Config Js -->
+<script src="~/assets/js/head.js"></script>
+
+<!-- Bootstrap css -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+<!-- App css -->
+<link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Icons css -->
+<link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
 
 
 <style>
@@ -15,47 +33,30 @@
         flex-grow: 1;
     }
 
-    .card-container {
-        display: flex; /* Use flexbox to arrange cards horizontally */
-        flex-wrap: wrap; /* Allow cards to wrap to the next row */
-        justify-content: flex-start; /* Distribute space between cards */
-        margin-bottom: 20px; /* Add some bottom margin for spacing */
+
+    .status-approved {
+        background-color: green;
+        color: white;
+        border-radius: 30px;
+        padding: 3px;
     }
 
-    .card {
-        border: 1px solid #333;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 20px;
-        width: calc(20% - 10px); /* Set the width of each card to fit two cards in a row with space between them */
-        box-sizing: border-box;
-        margin-right: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box-shadow for a subtle shadow effect */
-    }
-
-        .card strong {
-            font-weight: bold;
-            display: inline-block;
-            width: 120px;
-        }
-
-    .approved {
-        background-color: #c8e6c9; /* Light green for approved requests */
-    }
-
-    .rejected {
-        background-color: #ffcdd2; /* Light red for rejected requests */
+    .status-rejected {
+        background-color: red;
+        color: white;
+        border-radius: 30px;
+        padding: 3px;
     }
 
     .card-content {
-        padding: 20px;   
+        padding: 40px;
     }
 
     .header {
         display: flex;
         align-items: center;
         justify-content: flex-start; /* Change this to flex-start */
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
 
     .back-button {
@@ -65,7 +66,7 @@
         border-radius: 5px;
         padding: 8px 16px;
         cursor: pointer;
-        margin-right: 10px; /* Add margin to separate the button from h2 */
+        margin-left: 30px; /* Add margin to separate the button from h2 */
     }
 
     .tabs {
@@ -92,6 +93,17 @@
         background-color: #ccc;
     }
 
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+    }
+
+    .table-responsive{
+        background-color:#fff;
+    }
+
 </style>
 
 <div class="header">
@@ -107,109 +119,118 @@
 
 <div id="leaveRequests" class="card-content">
 
-    @if (Model.LeaveRequests.Any())
-    {
-        <h3>Leave Requests</h3>
-        <div class="card-container" id="leaveRequestContainer">
-            @foreach (var leaveRequest in Model.LeaveRequests)
-            {
-                <div class="card">
-                    <strong>Employee:</strong> @leaveRequest.UserDetail.FullName<br />
-                    <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
-                    <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
-                    <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
-                    <strong>Reason:</strong> @leaveRequest.Reason<br />
-                    <strong>Days:</strong> @leaveRequest.Days<br />
-                    <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
-                </div>
-            }
+    <h3 class="subtitle">Leave Requests</h3>
+    <div class="table-responsive">
+        <div style="overflow-x:auto">
+            <table class="table table-centered table-nowrap table-striped" id="products-datatable">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Leave Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Approved/Rejected Date</th>
+                        <th>Approved/Rejected By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var leaveRequest in Model.AllLeaveRequests)
+                    {
+                        <tr>
+                            <td>@leaveRequest.UserDetail.FullName</td>
+                            <td>@leaveRequest.LeaveType.LeaveTypeName</td>
+                            <td>@leaveRequest.StartDate?.ToShortDateString()</td>
+                            <td>@leaveRequest.EndDate?.ToShortDateString()</td>
+                            <td>@leaveRequest.Reason</td>
+                            <td>
+                                <span class="status-@(leaveRequest.LeaveStatus.LeaveStatusName.ToLower())">
+                                    @leaveRequest.LeaveStatus.LeaveStatusName
+                                </span>
+                            </td>
+                            <td>
+                                @if (leaveRequest.LeaveStatusId == 1)
+                                {
+                                    @leaveRequest.DateApproved?.ToShortDateString()
+                                }
+                                else if (leaveRequest.LeaveStatusId == 3)
+                                {
+                                    @leaveRequest.DateRejected?.ToShortDateString()
+                                }
+                            </td>
+                            <td>
+                                @if (leaveRequest.LeaveStatusId == 1)
+                                {
+                                    @leaveRequest.ApprovedByUserDetailId
+                                }
+                                else if (leaveRequest.LeaveStatusId == 3)
+                                {
+                                    @leaveRequest.RejectedByUserDetailId
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-    }
-
-    @if (Model.ApprovedLeaveRequests.Any())
-    {
-        <h3>Approved Leave Requests</h3>
-        <div class="card-container" id="leaveRequestContainer">
-            @foreach (var leaveRequest in Model.ApprovedLeaveRequests)
-            {
-                <div class="card approved">
-                    <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
-                    <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
-                    <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
-                    <strong>Reason:</strong> @leaveRequest.Reason<br />
-                    <strong>Days:</strong> @leaveRequest.Days<br />
-                    <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
-                </div>
-            }
-        </div>
-    }
-
-    @if (Model.RejectedLeaveRequests.Any())
-    {
-        <h3>Rejected Leave Requests</h3>
-        <div class="card-container" id="leaveRequestContainer">
-            @foreach (var leaveRequest in Model.RejectedLeaveRequests)
-            {
-                <div class="card rejected">
-                    <strong>Leave Type:</strong> @leaveRequest.LeaveType.LeaveTypeName<br />
-                    <strong>Start Date:</strong> @leaveRequest.StartDate?.ToShortDateString()<br />
-                    <strong>End Date:</strong> @leaveRequest.EndDate?.ToShortDateString()<br />
-                    <strong>Reason:</strong> @leaveRequest.Reason<br />
-                    <strong>Days:</strong> @leaveRequest.Days<br />
-                    <strong>Status:</strong> @leaveRequest.LeaveStatus.LeaveStatusName<br />
-                </div>
-            }
-        </div>
-    }
+    </div>
 
 </div>
 
 
 <div id="oncallRequests" class="card-content">
-    @if (Model.OncallRequests.Any())
-    {
-        <h3>Oncall Requests</h3>
-        <div class="card-container" id="oncallRequestContainer">
-            @foreach (var oncallRequest in Model.OncallRequests)
-            {
-                <div class="card">
-                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
-                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
-                    <strong>Status:</strong> @oncallRequest.LeaveStatus.LeaveStatusName<br />
-                </div>
-            }
-        </div>
-    }
+    <h3 class="subtitle">Oncall Requests</h3>
 
-    @if (Model.ApprovedOncallRequests.Any())
-    {
-        <h3>Approved Oncall Requests</h3>
-        <div class="card-container" id="oncallRequestContainer">
-            @foreach (var oncallRequest in Model.ApprovedOncallRequests)
-            {
-                <div class="card approved">
-                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
-                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
-                    <strong>Status:</strong> <span class="status-approved">@oncallRequest.LeaveStatus.LeaveStatusName</span><br />
-                </div>
-            }
+    <div class="table-responsive">
+        <div style="overflow-x:auto">
+            <table class="table table-centered table-nowrap table-striped" id="products-datatable">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Approved/Rejected Date</th>
+                        <th>Approved/Rejected By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var oncallRequest in Model.AllOncallRequests)
+                    {
+                        <tr>
+                            <td>@oncallRequest.UserDetail.FullName</td>
+                            <td>@oncallRequest.DateTimeOnCall?.ToShortDateString()</td>
+                            <td>
+                                <span class="status-@(oncallRequest.LeaveStatus.LeaveStatusName.ToLower())">
+                                    @oncallRequest.LeaveStatus.LeaveStatusName
+                                </span>
+                            </td>
+                            <td>
+                                @if (oncallRequest.LeaveStatusId == 1)
+                                {
+                                    @oncallRequest.DateApproved?.ToShortDateString()
+                                }
+                                else if (oncallRequest.LeaveStatusId == 3)
+                                {
+                                    @oncallRequest.DateRejected?.ToShortDateString()
+                                }
+                            </td>
+                            <td>
+                                @if (oncallRequest.LeaveStatusId == 1)
+                                {
+                                    @oncallRequest.ApprovedByUserDetailId
+                                }
+                                else if (oncallRequest.LeaveStatusId == 3)
+                                {
+                                    @oncallRequest.RejectedByUserDetailId
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-    }
-
-    @if (Model.RejectedOncallRequests.Any())
-    {
-        <h3>Rejected Oncall Requests</h3>
-        <div class="card-container" id="oncallRequestContainer">
-            @foreach (var oncallRequest in Model.RejectedOncallRequests)
-            {
-                <div class="card rejected">
-                    <strong>Employee:</strong> @oncallRequest.UserDetail.FullName<br />
-                    <strong>Date:</strong> @oncallRequest.DateTimeOnCall?.ToShortDateString()<br />
-                    <strong>Status:</strong> <span class="status-approved">@oncallRequest.LeaveStatus.LeaveStatusName</span><br />
-                </div>
-            }
-        </div>
-    }
+    </div>
 
 </div>
 

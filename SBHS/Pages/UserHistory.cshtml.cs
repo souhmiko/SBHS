@@ -15,12 +15,9 @@ namespace SBHS.Pages
             _context = context;
         }
 
-        public IList<LeaveRequests> LeaveRequests { get; set; } = default!;
-        public IList<OncallRequests> OncallRequests { get; set; } = default!;
-        public IList<LeaveRequests> ApprovedLeaveRequests { get; set; } = default!;
-        public IList<LeaveRequests> RejectedLeaveRequests { get; set; } = default!;
-        public IList<OncallRequests> ApprovedOncallRequests { get; set; } = default!;
-        public IList<OncallRequests> RejectedOncallRequests { get; set; } = default!;
+        public IList<LeaveRequests> AllLeaveRequests { get; set; } = default!;
+        public IList<OncallRequests> AllOncallRequests { get; set; } = default!;
+        public UserDetails UserDetail { get; set; } = new UserDetails();
 
         public async Task OnGetAsync()
         {
@@ -30,45 +27,35 @@ namespace SBHS.Pages
             if (!string.IsNullOrEmpty(userId))
             {
                 // Retrieve leave requests associated with the UserDetailId of the logged-in user
-                LeaveRequests = await _context.LeaveRequests
+                AllLeaveRequests = await _context.LeaveRequests
                     .Include(l => l.LeaveStatus)
                     .Include(l => l.LeaveType)
                     .Where(l => l.UserDetailId == GetUserDetailId(userId))
+                    .Where(l => l.LeaveStatusId == 1 || l.LeaveStatusId == 3)
+                    .OrderByDescending(l => l.DateApproved ?? l.DateRejected)
                     .ToListAsync();
 
                 // Retrieve oncall requests associated with the UserDetailId of the logged-in user
-                OncallRequests = await _context.OncallRequests
+                AllOncallRequests = await _context.OncallRequests
                     .Include(l => l.LeaveStatus)
                     .Where(l => l.UserDetailId == GetUserDetailId(userId))
+                    .Where(l => l.LeaveStatusId == 1 || l.LeaveStatusId == 3)
+                    .OrderByDescending(l => l.DateApproved ?? l.DateRejected)
                     .ToListAsync();
 
-                // Retrieve approved requests by the admin
-                ApprovedLeaveRequests = await _context.LeaveRequests
-                    .Include(l => l.LeaveStatus)
-                    .Include(l => l.LeaveType)
-                    .Where(l => l.LeaveStatusId == 1 && l.UserDetail.AspNetUserId == userId) // Assuming 1 is the ID for approved status
-                    .ToListAsync();
+                // Fetch admin full names for leave requests
+                foreach (var leaveRequest in AllLeaveRequests)
+                {
+                    leaveRequest.ApprovedByUserDetailId = GetAdminFullName(leaveRequest.ApprovedByUserDetailId);
+                    leaveRequest.RejectedByUserDetailId = GetAdminFullName(leaveRequest.RejectedByUserDetailId);
+                }
 
-                // Retrieve rejected requests by the admin
-                RejectedLeaveRequests = await _context.LeaveRequests
-                    .Include(l => l.LeaveStatus)
-                    .Include(l => l.LeaveType)
-                    .Where(l => l.LeaveStatusId == 3 && l.UserDetail.AspNetUserId == userId) // Assuming 3 is the ID for rejected status
-                    .ToListAsync();
-
-                //Oncall requests
-
-                ApprovedOncallRequests = await _context.OncallRequests
-                    .Include(l => l.LeaveStatus)
-                    .Include(l => l.UserDetail)
-                    .Where(l => l.LeaveStatusId == 1) // Assuming 1 is the ID for approved status
-                    .ToListAsync();
-
-                RejectedOncallRequests = await _context.OncallRequests
-                    .Include(l => l.LeaveStatus)
-                    .Include(l => l.UserDetail)
-                    .Where(l => l.LeaveStatusId == 3) // Assuming 3 is the ID for rejected status
-                    .ToListAsync();
+                // Fetch admin full names for on-call requests
+                foreach (var oncallRequest in AllOncallRequests)
+                {
+                    oncallRequest.ApprovedByUserDetailId = GetAdminFullName(oncallRequest.ApprovedByUserDetailId);
+                    oncallRequest.RejectedByUserDetailId = GetAdminFullName(oncallRequest.RejectedByUserDetailId);
+                }
             }
         }
 
@@ -77,6 +64,19 @@ namespace SBHS.Pages
         {
             var userDetail = _context.UserDetails.FirstOrDefault(u => u.AspNetUserId == aspNetUserId);
             return userDetail != null ? userDetail.Id : 0;
+        }
+
+
+        // Method to fetch admin full name by user ID
+        private string? GetAdminFullName(string? userId)
+        {
+            if (userId == null)
+            {
+                return null; // Or handle the null case accordingly
+            }
+
+            var userDetails = _context.UserDetails.FirstOrDefault(u => u.AspNetUserId == userId);
+            return userDetails?.FullName;
         }
     }
 }

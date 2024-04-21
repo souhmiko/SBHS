@@ -21,6 +21,9 @@ namespace SBHS.Pages
             _context = context;
         }
 
+        // Define a list of allowed file extensions
+        private readonly string[] AllowedExtensions = { ".pdf", ".doc", ".docx", ".txt" };
+
         [BindProperty]
         public LeaveRequests LeaveRequest { get; set; } = new LeaveRequests();
         public int LeaveTypeId { get; set; }
@@ -51,13 +54,6 @@ namespace SBHS.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            // Check if the quota for the requested date is full
-            //if (IsQuotaFull(LeaveRequest.StartDate))
-            //{
-            //    // Set a message indicating that the quota is full
-            //    ViewData["QuotaFullMessage"] = "Quota for this date is full. Please choose another date.";
-            //    return Page(); // Return the page with the message
-            //}
 
             if (!ModelState.IsValid)
             {
@@ -67,6 +63,16 @@ namespace SBHS.Pages
             // Save uploaded file data to the database
             if (UploadDocument != null && UploadDocument.Length > 0)
             {
+                var fileExtension = Path.GetExtension(UploadDocument.FileName).ToLowerInvariant();
+
+                // Check if the file extension is in the list of allowed extensions
+                if (!AllowedExtensions.Contains(fileExtension))
+                {
+                    // Return error message if the file type is not allowed
+                    ModelState.AddModelError("UploadDocument", "Only PDF file are allowed.");
+                    return Page();
+                }
+
                 using (var memoryStream = new MemoryStream())
                 {
                     await UploadDocument.CopyToAsync(memoryStream);
@@ -125,23 +131,7 @@ namespace SBHS.Pages
             return 2; // Update this to query the database for the ID dynamically if needed
         }
 
-        //private bool IsQuotaFull(DateTime? date)
-        //{
-        //    if (date.HasValue)
-        //    {
-        //        // Count the number of leave requests for the given date
-        //        var leaveRequestsCount = _context.LeaveRequests
-        //            .Count(lr => lr.StartDate.HasValue && lr.StartDate.Value.Date == date.Value.Date);
-
-        //        // Assuming the quota is 3, check if the count exceeds the quota
-        //        return leaveRequestsCount >= 1;
-        //    }
-        //    else
-        //    {
-        //        // Handle the case where date is null (optional)
-        //        return false; // or throw an exception, depending on your requirements
-        //    }
-        //}
+        
 
         private bool IsQuotaFull(DateTime? date, int? maxAllowed)
         {

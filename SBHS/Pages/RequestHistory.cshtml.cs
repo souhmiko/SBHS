@@ -14,47 +14,54 @@ namespace SBHS.Pages
             _context = context;
         }
 
-        public IList<LeaveRequests> ApprovedLeaveRequests { get; set; } = default!;
-        public IList<LeaveRequests> RejectedLeaveRequests { get; set; } = default!;
-        public IList<OncallRequests> ApprovedOncallRequests { get; set; } = default!;
-        public IList<OncallRequests> RejectedOncallRequests { get; set; } = default!;
+        public IList<LeaveRequests> AllLeaveRequests { get; set; } = default!;
+        public IList<OncallRequests> AllOncallRequests { get; set; } = default!;
+        public UserDetails UserDetail { get; set; } = new UserDetails();
 
         public async Task OnGetAsync()
         {
-            //Leave requests
-
-            ApprovedLeaveRequests = await _context.LeaveRequests
+            // Combined leave requests
+            AllLeaveRequests = await _context.LeaveRequests
                 .Include(l => l.LeaveStatus)
                 .Include(l => l.LeaveType)
                 .Include(l => l.UserDetail)
-                .Where(l => l.LeaveStatusId == 1)
-                .OrderByDescending(l => l.DateApproved)
+                .Where(l => l.LeaveStatusId == 1 || l.LeaveStatusId == 3) // Combine approved and rejected
+                .OrderByDescending(l => l.DateApproved ?? l.DateRejected) // Sort by approval date or rejection date
                 .ToListAsync();
 
-            RejectedLeaveRequests = await _context.LeaveRequests
-                .Include(l => l.LeaveStatus)
-                .Include(l => l.LeaveType)
-                .Include(l => l.UserDetail)
-                .Where(l => l.LeaveStatusId == 3)
-                .OrderByDescending(l => l.DateRejected)
-                .ToListAsync();
-
-
-            //Oncall requests
-
-            ApprovedOncallRequests = await _context.OncallRequests
+            // Combined on-call requests
+            AllOncallRequests = await _context.OncallRequests
                 .Include(l => l.LeaveStatus)
                 .Include(l => l.UserDetail)
-                .Where(l => l.LeaveStatusId == 1)
-                .OrderByDescending(l => l.DateApproved)
+                .Where(l => l.LeaveStatusId == 1 || l.LeaveStatusId == 3) // Combine approved and rejected
+                .OrderByDescending(l => l.DateApproved ?? l.DateRejected) // Sort by approval date or rejection date
                 .ToListAsync();
 
-            RejectedOncallRequests = await _context.OncallRequests
-                .Include(l => l.LeaveStatus)
-                .Include(l => l.UserDetail)
-                .Where(l => l.LeaveStatusId == 3)
-                .OrderByDescending(l => l.DateRejected)
-                .ToListAsync();
+            // Fetch admin full names for leave requests
+            foreach (var leaveRequest in AllLeaveRequests)
+            {
+                leaveRequest.ApprovedByUserDetailId = GetAdminFullName(leaveRequest.ApprovedByUserDetailId);
+                leaveRequest.RejectedByUserDetailId = GetAdminFullName(leaveRequest.RejectedByUserDetailId);
+            }
+
+            // Fetch admin full names for on-call requests
+            foreach (var oncallRequest in AllOncallRequests)
+            {
+                oncallRequest.ApprovedByUserDetailId = GetAdminFullName(oncallRequest.ApprovedByUserDetailId);
+                oncallRequest.RejectedByUserDetailId = GetAdminFullName(oncallRequest.RejectedByUserDetailId);
+            }
+        }
+
+        // Method to fetch admin full name by user ID
+        private string? GetAdminFullName(string? userId)
+        {
+            if (userId == null)
+            {
+                return null; // Or handle the null case accordingly
+            }
+
+            var userDetails = _context.UserDetails.FirstOrDefault(u => u.AspNetUserId == userId);
+            return userDetails?.FullName;
         }
     }
 }

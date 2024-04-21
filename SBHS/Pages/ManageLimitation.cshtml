@@ -30,6 +30,11 @@
     .border-right {
         border-right: 1px solid #333; /* Add a border on the right side */
     }
+
+    h3{
+        padding: 10px;
+    }
+
 </style>
 
 
@@ -98,7 +103,7 @@
                                                             <form method="post" asp-page-handler="UpdateLeaveCondition">
                                                                 <input type="hidden" name="workTitleId" value="@leaveCondition.WorkTitleId" />
                                                                 <input type="number" name="updatedLeaveLimit" value="@leaveCondition.MaxAmountofStaffAllowed" />
-                                                                <button type="submit" class="btn btn-sm btn-info">Update</button>
+                                                                <button type="submit" class="btn btn-primary">Update</button>
                                                             </form>
                                                         </td>
                                                     </tr>
@@ -172,7 +177,7 @@
                                                             <form method="post" asp-page-handler="UpdateOncallCondition">
                                                                 <input type="hidden" name="workTitleId" value="@oncallCondition.WorkTitleId" />
                                                                 <input type="number" name="updatedOncallLimit" value="@oncallCondition.MaxAmountofStaffAllowed" />
-                                                                <button type="submit" class="btn btn-sm btn-info">Update</button>
+                                                                <button type="submit" class="btn btn-primary">Update</button>
                                                             </form>
                                                         </td>
                                                     </tr>

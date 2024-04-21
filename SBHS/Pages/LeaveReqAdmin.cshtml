@@ -134,7 +134,9 @@
                                                 <td>
                                                     @if (item.UploadDocument != null)
                                                     {
-                                                        <button type="button" onclick="viewDocument('@item.Id')"><i class="fa-solid fa-file"></i></button>
+                                                        @* <button type="button" onclick="viewDocument('@item.Id')"><i class="fa-solid fa-file"></i></button> *@
+                                                        <a href="/ViewFile?documentId=@item.Id"><i class="fa-solid fa-file"></i></a>
+                                                        
                                                     }
                                                     else
                                                     {

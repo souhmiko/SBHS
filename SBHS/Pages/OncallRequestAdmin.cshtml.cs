@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace SBHS.Pages
     public class OncallRequestAdminModel : PageModel
     {
         private readonly SBHS.Models.SBHSDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public OncallRequestAdminModel(SBHS.Models.SBHSDbContext context)
+        public OncallRequestAdminModel(SBHS.Models.SBHSDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IList<OncallRequests> OncallRequests { get;set; } = default!;
@@ -42,16 +45,20 @@ namespace SBHS.Pages
                 return NotFound();
             }
 
+            // Get the ID of the current user
+            var currentUser = await _userManager.GetUserAsync(User);
+            var adminDetails = await _context.UserDetails.FirstOrDefaultAsync(u => u.AspNetUserId == currentUser.Id);
+
             if (action == "Approve")
             {
                 oncallRequest.LeaveStatusId = 1; // Assuming 1 is the ID for approved status
-                oncallRequest.ApprovedByUserDetailId = "admin"; // Set the admin who approved the request
+                oncallRequest.ApprovedByUserDetailId = adminDetails?.AspNetUserId; ; // Set the admin who approved the request
                 oncallRequest.DateApproved = DateTime.Now; // Set the current date/time as the approval date
             }
             else if (action == "Reject")
             {
                 oncallRequest.LeaveStatusId = 3; // Assuming 3 is the ID for rejected status
-                oncallRequest.RejectedByUserDetailId = "admin"; // Set the admin who rejected the request
+                oncallRequest.RejectedByUserDetailId = adminDetails?.AspNetUserId; // Set the admin who rejected the request
                 oncallRequest.DateRejected = DateTime.Now; // Set the current date/time as the rejection date
             }
 
