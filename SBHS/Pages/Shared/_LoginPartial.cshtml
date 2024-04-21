@@ -3,7 +3,9 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-
+@{
+    // var isAdmin = User.IsInRole("Admin");
+}
 
 <style>
     /* Add your custom styles here */
@@ -83,6 +85,14 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="userDropdown">
                 <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a>
+                @* @if (isAdmin)
+                {
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/AdminManage" title="Manage">Manage Account</a>
+                }
+                else
+                {
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/UserManage" title="Manage">Manage Account</a>
+                } *@
                 <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
                     <button id="logout" type="submit" class="dropdown-item">Logout</button>
                 </form>

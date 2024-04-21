@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,7 @@ using SBHS.Models;
 
 namespace SBHS.Pages
 {
+    [Authorize(Roles = "Admin")]
     public class RequestHistoryModel : PageModel
     {
         private readonly SBHSDbContext _context;

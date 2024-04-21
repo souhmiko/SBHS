@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,6 +8,7 @@ using System.Security.Claims;
 
 namespace SBHS.Pages.Roles
 {
+    [Authorize(Roles = "Admin")]
     public class ManageRolesModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;

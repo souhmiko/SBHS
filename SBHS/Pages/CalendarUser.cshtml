@@ -1,0 +1,117 @@
+﻿@page
+@model SBHS.Pages.CalendarUserModel
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Plugins css -->
+<link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+<!-- Theme Config Js -->
+<script src="~/assets/js/head.js"></script>
+
+<!-- Bootstrap css -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="app-style" />
+
+<!-- App css -->
+<link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+<!-- Icons css -->
+<link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+
+
+<style>
+    h2 {
+        text-align: center;
+        margin-top: 30px;
+        flex-grow: 1;
+    }
+
+    .fullcalendar {
+        background-color: #fff;
+        padding: 40px;
+        margin-top: 30px;
+        font-family: Arial;
+        color: #333;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Change this to flex-start */
+        margin-bottom: 10px;
+    }
+
+    .back-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 16px;
+        cursor: pointer;
+        margin-left: 30px; /* Add margin to separate the button from h2 */
+    }
+
+</style>
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+
+<div class="header">
+    <a class="back-button" href="/User"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>Calendar</h2>
+</div>
+
+<div class="fullcalendar" id='calendar'></div>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: [
+                @foreach (var leaveRequest in Model.ApprovedLeaveRequests)
+                {
+                    <text>{
+                        title: '@leaveRequest.UserDetail.FullName' + ' - ' + '@leaveRequest.LeaveType.LeaveTypeName',
+                        start: '@leaveRequest.StartDate?.ToString("yyyy-MM-dd")', // Adjust date formatting as needed
+                        end: '@leaveRequest.EndDate?.ToString("yyyy-MM-dd")', // Adjust date formatting as needed
+                        color: 'orange',
+                        description: '@leaveRequest.UserDetail.FullName - Department: @(leaveRequest.UserDetail.Department.DepartmentName), Work Title: @(leaveRequest.UserDetail.WorkTitle.WorkTitleName)'
+                    }, </text>
+                }
+
+                @foreach (var onCallRequest in Model.ApprovedOncallRequests)
+                {
+                    <text>{
+                        title: '@onCallRequest.UserDetail.FullName' + ' (On-call)',
+                        start: '@onCallRequest.DateTimeOnCall?.ToString("yyyy-MM-dd")',
+                        color: 'green',
+                        description: '@onCallRequest.UserDetail.FullName - Department: @(onCallRequest.UserDetail.Department.DepartmentName), Work Title: @(onCallRequest.UserDetail.WorkTitle.WorkTitleName)'
+                    }, </text>
+                }
+
+            ],
+            eventClick: function (info) {
+                // Get the event description (details)
+                var description = info.event.extendedProps.description;
+                // Show the event details in an alert
+                alert(description);
+            }
+        });
+        calendar.render();
+    });
+
+</script>

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 
 namespace SBHS.Pages
 {
+    [Authorize(Roles = "Admin")]
     public class LeaveReqAdminModel : PageModel
     {
         private readonly SBHSDbContext _context;
